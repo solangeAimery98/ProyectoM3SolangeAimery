@@ -4,53 +4,386 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Hogwarts Chat | Severus Snape</title>
+    <title>Arcana | Personajes mágicos</title>
 
     <link rel="stylesheet" href="./styles.css" />
   </head>
 
   <body>
-    <main class="chat">
-      <header class="chat-header">
-        <div class="character-avatar" aria-hidden="true">SS</div>
+    <main class="app">
+      <!-- =========================================
+           DECORATIVE MAGIC
+           ========================================= -->
 
-        <div class="character-info">
-          <h1>Severus Snape</h1>
-          <p>Profesor de Pociones</p>
+      <div class="magic-particles" aria-hidden="true">
+        <span class="particle particle--1">✦</span>
+        <span class="particle particle--2">✧</span>
+        <span class="particle particle--3">·</span>
+        <span class="particle particle--4">✦</span>
+        <span class="particle particle--5">·</span>
+        <span class="particle particle--6">✧</span>
+        <span class="particle particle--7">✦</span>
+        <span class="particle particle--8">·</span>
+      </div>
+
+      <!-- =========================================
+           BACKGROUND
+           ========================================= -->
+
+      <div class="background-layers" aria-hidden="true">
+        <div class="background-image"></div>
+        <div class="background-dark"></div>
+        <div class="background-tint"></div>
+        <div class="background-glow"></div>
+      </div>
+
+      <!-- =========================================
+           TAROT FRAME
+           ========================================= -->
+
+      <div class="tarot-frame" aria-hidden="true"></div>
+
+      <!-- =========================================
+           GLOBAL NAVIGATION
+           ========================================= -->
+
+      <header class="site-header">
+        <div class="site-header__inner">
+          <a class="brand" href="/" aria-label="Arcana - inicio">
+            <img
+              class="brand__logo"
+              src="./assets/img/harry-potter-logo-gold.png"
+              alt="Harry Potter"
+            />
+
+            <span class="brand__name">ARCANA</span>
+          </a>
+
+          <nav class="site-nav" aria-label="Navegación principal">
+            <a class="site-nav__link site-nav__link--active" href="/">
+              Personajes
+            </a>
+
+            <a class="site-nav__link" href="/about"> Sobre Arcana </a>
+          </nav>
         </div>
-
-        <span class="character-status" aria-label="En línea">
-          <span class="status-dot"></span>
-          <span class="status-text">En línea</span>
-        </span>
       </header>
 
-      <section
-        class="chat-messages"
-        id="chat-messages"
-        aria-label="Conversación con Severus Snape"
-        aria-live="polite"
-      ></section>
+      <!-- =========================================
+           CHARACTER SELECTION
+           ========================================= -->
 
-      <form class="chat-composer" id="chat-form">
-        <label class="visually-hidden" for="message-input">
-          Escribe tu mensaje
-        </label>
+      <section class="character-selection">
+        <div class="selection-heading">
+          <div class="selection-ornament" aria-hidden="true">
+            <span></span>
+            <span>✦</span>
+            <span></span>
+          </div>
 
-        <input
-          type="text"
-          id="message-input"
-          name="message"
-          class="message-input"
-          placeholder="Escribe un mensaje..."
-          autocomplete="off"
-          required
-        />
+          <p class="selection-overline">THE WIZARDING WORLD</p>
 
-        <button type="submit" class="send-button" aria-label="Enviar mensaje">
-          <span aria-hidden="true">➤</span>
-        </button>
-      </form>
+          <h1>
+            Chateá con tu<br />
+            personaje favorito
+          </h1>
+
+          <p class="selection-description">
+            Elegí una personalidad y comenzá una conversación. Cada personaje
+            tiene su propia voz, historia y manera de responder.
+          </p>
+        </div>
+
+        <!-- =========================================
+             CHARACTER CARDS
+             ========================================= -->
+
+        <div class="character-grid">
+          <!-- =====================================
+               SEVERUS SNAPE
+               ===================================== -->
+
+          <button
+            class="character-card character-card--active"
+            type="button"
+            data-character="snape"
+            aria-label="Chatear con Severus Snape"
+          >
+            <div class="character-card__portrait">
+              <img src="./assets/img/snape-avatar.jpeg" alt="Severus Snape" />
+
+              <div class="character-card__portrait-shine"></div>
+            </div>
+
+            <div class="character-card__content">
+              <p class="character-card__label">AVAILABLE NOW</p>
+
+              <h2>Severus Snape</h2>
+
+              <p class="character-card__role">Professor of Potions</p>
+
+              <div class="character-card__divider" aria-hidden="true">
+                <span></span>
+                <span>◆</span>
+                <span></span>
+              </div>
+
+              <p class="character-card__description">
+                El maestro de Pociones te espera.
+              </p>
+
+              <span class="character-card__cta">
+                Entrar a la conversación
+                <span>↗</span>
+              </span>
+            </div>
+
+            <span
+              class="character-card__corner character-card__corner--tl"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--tr"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--bl"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--br"
+            ></span>
+          </button>
+
+          <!-- =====================================
+               LORD VOLDEMORT
+               ===================================== -->
+
+          <button
+            class="character-card character-card--active"
+            type="button"
+            data-character="voldemort"
+            aria-label="Chatear con Lord Voldemort"
+          >
+            <div class="character-card__portrait">
+              <img src="./assets/img/voldemort.jpeg" alt="Lord Voldemort" />
+
+              <div class="character-card__portrait-shine"></div>
+            </div>
+
+            <div class="character-card__content">
+              <p class="character-card__label">AVAILABLE NOW</p>
+
+              <h2>Lord Voldemort</h2>
+
+              <p class="character-card__role">The Dark Lord</p>
+
+              <div class="character-card__divider" aria-hidden="true">
+                <span></span>
+                <span>◆</span>
+                <span></span>
+              </div>
+
+              <p class="character-card__description">
+                El Señor Tenebroso está dispuesto a hablar.
+              </p>
+
+              <span class="character-card__cta">
+                Entrar a la conversación
+                <span>↗</span>
+              </span>
+            </div>
+
+            <span
+              class="character-card__corner character-card__corner--tl"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--tr"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--bl"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--br"
+            ></span>
+          </button>
+
+          <!-- =====================================
+               ALBUS DUMBLEDORE
+               ===================================== -->
+
+          <button
+            class="character-card character-card--active"
+            type="button"
+            data-character="dumbledore"
+            aria-label="Chatear con Albus Dumbledore"
+          >
+            <div class="character-card__portrait">
+              <img src="./assets/img/dumdledore.jpeg" alt="Albus Dumbledore" />
+
+              <div class="character-card__portrait-shine"></div>
+            </div>
+
+            <div class="character-card__content">
+              <p class="character-card__label">AVAILABLE NOW</p>
+
+              <h2>Albus Dumbledore</h2>
+
+              <p class="character-card__role">Headmaster of Hogwarts</p>
+
+              <div class="character-card__divider" aria-hidden="true">
+                <span></span>
+                <span>◆</span>
+                <span></span>
+              </div>
+
+              <p class="character-card__description">
+                El director de Hogwarts te aguarda.
+              </p>
+
+              <span class="character-card__cta">
+                Entrar a la conversación
+                <span>↗</span>
+              </span>
+            </div>
+
+            <span
+              class="character-card__corner character-card__corner--tl"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--tr"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--bl"
+            ></span>
+
+            <span
+              class="character-card__corner character-card__corner--br"
+            ></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- =========================================
+           CHAT AREA
+           ========================================= -->
+
+      <section class="chat-panel" aria-label="Chat con Severus Snape">
+        <!-- CHAT HEADER -->
+
+        <header class="chat-header">
+          <div class="header-ornament" aria-hidden="true">
+            <span></span>
+            <span>✦</span>
+            <span></span>
+          </div>
+
+          <div class="character-avatar">
+            <img src="./assets/img/snape-avatar.jpeg" alt="Severus Snape" />
+          </div>
+
+          <div class="character-info">
+            <p class="character-label">PROFESSOR OF POTIONS</p>
+
+            <h2>Severus Snape</h2>
+
+            <div class="character-line" aria-hidden="true"></div>
+          </div>
+
+          <div
+            class="character-status"
+            aria-label="Severus Snape está disponible"
+          >
+            <span class="status-dot"></span>
+
+            <span class="status-text"> Disponible </span>
+          </div>
+        </header>
+
+        <!-- MESSAGES -->
+
+        <section
+          class="chat-messages"
+          id="chat-messages"
+          aria-label="Conversación con Severus Snape"
+          aria-live="polite"
+        >
+          <div class="empty-state" aria-hidden="true">
+            <div class="empty-card">
+              <div class="card-corner card-corner--top-left"></div>
+
+              <div class="card-corner card-corner--top-right"></div>
+
+              <div class="card-corner card-corner--bottom-left"></div>
+
+              <div class="card-corner card-corner--bottom-right"></div>
+
+              <div class="empty-symbol">✦</div>
+
+              <p class="empty-overline">PRIVATE CORRESPONDENCE</p>
+
+              <div class="empty-divider" aria-hidden="true">
+                <span></span>
+                <span>◆</span>
+                <span></span>
+              </div>
+
+              <h2>Severus Snape</h2>
+
+              <p class="empty-title">Master of Potions</p>
+
+              <div class="empty-quote">
+                <span class="quote-mark"> “ </span>
+
+                <p>What is it you want?</p>
+
+                <span class="quote-mark quote-mark--close"> ” </span>
+              </div>
+
+              <p class="empty-description">
+                Inicie una conversación con el profesor de Pociones.
+              </p>
+
+              <div class="empty-symbol empty-symbol--bottom">✦</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- COMPOSER -->
+
+        <form class="chat-composer" id="chat-form">
+          <div class="composer-ornament" aria-hidden="true">
+            <span></span>
+            <span>✦</span>
+            <span></span>
+          </div>
+
+          <label class="visually-hidden" for="message-input">
+            Escribe tu mensaje
+          </label>
+
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="message-input"
+              name="message"
+              class="message-input"
+              placeholder="Write to Severus Snape..."
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <button type="submit" class="send-button" aria-label="Enviar mensaje">
+            <span class="send-icon" aria-hidden="true"> ↗ </span>
+          </button>
+        </form>
+      </section>
     </main>
 
     <script type="module" src="./app.js"></script>
