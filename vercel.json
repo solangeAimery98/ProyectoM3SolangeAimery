@@ -2,16 +2,20 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/chat",
-      "destination": "/index.html"
+      "source": "/",
+      "destination": "/src/index.html"
     },
     {
       "source": "/home",
-      "destination": "/index.html"
+      "destination": "/src/index.html"
+    },
+    {
+      "source": "/chat",
+      "destination": "/src/index.html"
     },
     {
       "source": "/about",
-      "destination": "/index.html"
+      "destination": "/src/index.html"
     }
   ]
 }
