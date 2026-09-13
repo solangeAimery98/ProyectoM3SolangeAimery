@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/chat",
+      "destination": "/src/index.html"
+    },
+    {
+      "source": "/home",
+      "destination": "/src/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/src/index.html"
+    }
+  ]
+}

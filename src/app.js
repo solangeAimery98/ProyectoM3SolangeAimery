@@ -14,10 +14,12 @@ const messages = [
     role: "snape",
     content: "¿Qué desea?",
   },
+
   {
     role: "user",
     content: "Quería hablar contigo, profesor.",
   },
+
   {
     role: "snape",
     content: "Entonces hable. No tengo toda la noche.",
@@ -31,6 +33,16 @@ function normalizePath(path) {
 
   let normalizedPath = path.replace(/\/+$/, "");
 
+  /*
+   * Cuando usamos Live Server y abrimos:
+   *
+   * /src/index.html
+   *
+   * lo consideramos como la ruta principal:
+   *
+   * /
+   */
+
   if (normalizedPath === "/src" || normalizedPath === "/src/index.html") {
     return "/";
   }
@@ -38,26 +50,36 @@ function normalizePath(path) {
   return normalizedPath || "/";
 }
 
+/* =========================================
+   HOME
+   ========================================= */
+
 function renderHome() {
   app.innerHTML = `
     <section class="character-selection">
 
       <div class="selection-heading">
 
-        <div class="selection-ornament" aria-hidden="true">
+        <div
+          class="selection-ornament"
+          aria-hidden="true"
+        >
           <span></span>
           <span>✦</span>
           <span></span>
         </div>
 
+
         <p class="selection-overline">
           THE WIZARDING WORLD
         </p>
+
 
         <h1>
           Chateá con tu<br />
           personaje favorito
         </h1>
+
 
         <p class="selection-description">
           Elegí una personalidad y comenzá una conversación.
@@ -67,7 +89,13 @@ function renderHome() {
 
       </div>
 
+
+      <!-- =====================================
+           CHARACTER CARDS
+           ===================================== -->
+
       <div class="character-grid">
+
 
         <!-- =====================================
              SEVERUS SNAPE
@@ -87,9 +115,12 @@ function renderHome() {
               alt="Severus Snape"
             />
 
-            <div class="character-card__portrait-shine"></div>
+            <div
+              class="character-card__portrait-shine"
+            ></div>
 
           </div>
+
 
           <div class="character-card__content">
 
@@ -97,13 +128,16 @@ function renderHome() {
               AVAILABLE NOW
             </p>
 
+
             <h2>
               Severus Snape
             </h2>
 
+
             <p class="character-card__role">
               Professor of Potions
             </p>
+
 
             <div
               class="character-card__divider"
@@ -114,9 +148,11 @@ function renderHome() {
               <span></span>
             </div>
 
+
             <p class="character-card__description">
               El maestro de Pociones te espera.
             </p>
+
 
             <span class="character-card__cta">
               Entrar a la conversación
@@ -124,6 +160,7 @@ function renderHome() {
             </span>
 
           </div>
+
 
           <span
             class="character-card__corner character-card__corner--tl"
@@ -162,9 +199,12 @@ function renderHome() {
               alt="Lord Voldemort"
             />
 
-            <div class="character-card__portrait-shine"></div>
+            <div
+              class="character-card__portrait-shine"
+            ></div>
 
           </div>
+
 
           <div class="character-card__content">
 
@@ -172,13 +212,16 @@ function renderHome() {
               AVAILABLE NOW
             </p>
 
+
             <h2>
               Lord Voldemort
             </h2>
 
+
             <p class="character-card__role">
               The Dark Lord
             </p>
+
 
             <div
               class="character-card__divider"
@@ -189,9 +232,11 @@ function renderHome() {
               <span></span>
             </div>
 
+
             <p class="character-card__description">
               El Señor Tenebroso está dispuesto a hablar.
             </p>
+
 
             <span class="character-card__cta">
               Entrar a la conversación
@@ -199,6 +244,7 @@ function renderHome() {
             </span>
 
           </div>
+
 
           <span
             class="character-card__corner character-card__corner--tl"
@@ -237,9 +283,12 @@ function renderHome() {
               alt="Albus Dumbledore"
             />
 
-            <div class="character-card__portrait-shine"></div>
+            <div
+              class="character-card__portrait-shine"
+            ></div>
 
           </div>
+
 
           <div class="character-card__content">
 
@@ -247,13 +296,16 @@ function renderHome() {
               AVAILABLE NOW
             </p>
 
+
             <h2>
               Albus Dumbledore
             </h2>
 
+
             <p class="character-card__role">
               Headmaster of Hogwarts
             </p>
+
 
             <div
               class="character-card__divider"
@@ -264,9 +316,11 @@ function renderHome() {
               <span></span>
             </div>
 
+
             <p class="character-card__description">
               El director de Hogwarts te aguarda.
             </p>
+
 
             <span class="character-card__cta">
               Entrar a la conversación
@@ -274,6 +328,7 @@ function renderHome() {
             </span>
 
           </div>
+
 
           <span
             class="character-card__corner character-card__corner--tl"
@@ -294,11 +349,16 @@ function renderHome() {
         </button>
 
       </div>
+
     </section>
   `;
 
   setupCharacterCards();
 }
+
+/* =========================================
+   CHAT
+   ========================================= */
 
 function renderChat() {
   app.innerHTML = `
@@ -313,11 +373,15 @@ function renderChat() {
 
       <header class="chat-header">
 
-        <div class="header-ornament" aria-hidden="true">
+        <div
+          class="header-ornament"
+          aria-hidden="true"
+        >
           <span></span>
           <span>✦</span>
           <span></span>
         </div>
+
 
         <div class="character-avatar">
 
@@ -328,15 +392,18 @@ function renderChat() {
 
         </div>
 
+
         <div class="character-info">
 
           <p class="character-label">
             PROFESSOR OF POTIONS
           </p>
 
+
           <h2>
             Severus Snape
           </h2>
+
 
           <div
             class="character-line"
@@ -344,6 +411,7 @@ function renderChat() {
           ></div>
 
         </div>
+
 
         <div
           class="character-status"
@@ -372,7 +440,10 @@ function renderChat() {
         aria-live="polite"
       >
 
-        <div class="empty-state" aria-hidden="true">
+        <div
+          class="empty-state"
+          aria-hidden="true"
+        >
 
           <div class="empty-card">
 
@@ -392,13 +463,16 @@ function renderChat() {
               class="card-corner card-corner--bottom-right"
             ></div>
 
+
             <div class="empty-symbol">
               ✦
             </div>
 
+
             <p class="empty-overline">
               PRIVATE CORRESPONDENCE
             </p>
+
 
             <div
               class="empty-divider"
@@ -409,13 +483,16 @@ function renderChat() {
               <span></span>
             </div>
 
+
             <h2>
               Severus Snape
             </h2>
 
+
             <p class="empty-title">
               Master of Potions
             </p>
+
 
             <div class="empty-quote">
 
@@ -427,15 +504,19 @@ function renderChat() {
                 What is it you want?
               </p>
 
-              <span class="quote-mark quote-mark--close">
+              <span
+                class="quote-mark quote-mark--close"
+              >
                 ”
               </span>
 
             </div>
 
+
             <p class="empty-description">
               Inicie una conversación con el profesor de Pociones.
             </p>
+
 
             <div
               class="empty-symbol empty-symbol--bottom"
@@ -468,12 +549,14 @@ function renderChat() {
           <span></span>
         </div>
 
+
         <label
           class="visually-hidden"
           for="message-input"
         >
           Escribe tu mensaje
         </label>
+
 
         <div class="input-wrapper">
 
@@ -489,17 +572,20 @@ function renderChat() {
 
         </div>
 
+
         <button
           type="submit"
           class="send-button"
           aria-label="Enviar mensaje"
         >
+
           <span
             class="send-icon"
             aria-hidden="true"
           >
             ↗
           </span>
+
         </button>
 
       </form>
@@ -512,11 +598,15 @@ function renderChat() {
   });
 }
 
+/* =========================================
+   ABOUT
+   ========================================= */
+
 function renderAbout() {
   app.innerHTML = `
-    <section class="about-page">
+    <section class="character-selection">
 
-      <div class="about-content">
+      <div class="selection-heading">
 
         <div
           class="selection-ornament"
@@ -526,51 +616,58 @@ function renderAbout() {
           <span>✦</span>
           <span></span>
         </div>
+
 
         <p class="selection-overline">
           ABOUT ARCANA
         </p>
 
+
         <h1>
-          El mundo mágico<br />
-          cobra vida
+          Sobre<br />
+          Arcana
         </h1>
+
 
         <p class="selection-description">
           Arcana es una experiencia de conversación
-          interactiva que te permite hablar con personajes
+          interactiva que permite hablar con personajes
           del mundo mágico.
         </p>
 
+
         <p class="selection-description">
-          Cada personaje posee una personalidad,
-          una historia y una forma particular de responder.
-          La experiencia combina una interfaz inspirada
-          en el universo mágico con inteligencia artificial.
+          Cada personaje tiene su propia personalidad,
+          historia y manera de responder. La aplicación
+          combina una interfaz inspirada en el universo
+          mágico con inteligencia artificial.
         </p>
 
-        <div class="about-divider" aria-hidden="true">
+
+        <div
+          class="selection-ornament"
+          aria-hidden="true"
+        >
           <span></span>
           <span>◆</span>
           <span></span>
         </div>
 
-        <h2>
-          Proyecto Integrador M3
-        </h2>
 
         <p class="selection-description">
-          Esta aplicación fue desarrollada utilizando
+          Este proyecto forma parte del Proyecto
+          Integrador M3 y está desarrollado utilizando
           HTML, CSS y JavaScript Vanilla, sin frameworks
           ni librerías externas.
         </p>
 
+
         <a
-          class="character-card__cta about-chat-link"
+          class="site-nav__link"
           href="/"
+          style="display: inline-flex; margin-top: 24px;"
         >
-          Conocer los personajes
-          <span>↗</span>
+          ← Ver personajes
         </a>
 
       </div>
@@ -579,11 +676,15 @@ function renderAbout() {
   `;
 }
 
+/* =========================================
+   404
+   ========================================= */
+
 function renderNotFound() {
   app.innerHTML = `
-    <section class="about-page">
+    <section class="character-selection">
 
-      <div class="about-content">
+      <div class="selection-heading">
 
         <div
           class="selection-ornament"
@@ -594,24 +695,28 @@ function renderNotFound() {
           <span></span>
         </div>
 
+
         <p class="selection-overline">
           ARCANA
         </p>
+
 
         <h1>
           404
         </h1>
 
+
         <p class="selection-description">
           La página que estás buscando no existe.
         </p>
 
+
         <a
-          class="character-card__cta"
+          class="site-nav__link"
           href="/"
+          style="display: inline-flex; margin-top: 24px;"
         >
-          Volver a los personajes
-          <span>↗</span>
+          ← Volver a los personajes
         </a>
 
       </div>
@@ -619,6 +724,10 @@ function renderNotFound() {
     </section>
   `;
 }
+
+/* =========================================
+   ROUTER
+   ========================================= */
 
 function router() {
   const path = normalizePath(window.location.pathname);
@@ -630,8 +739,13 @@ function router() {
   updateActiveNavigation(path);
 }
 
+/* =========================================
+   SPA NAVIGATION
+   ========================================= */
+
 function navigateTo(path) {
   const normalizedPath = normalizePath(path);
+
   const currentPath = normalizePath(window.location.pathname);
 
   if (normalizedPath === currentPath) {
@@ -643,14 +757,31 @@ function navigateTo(path) {
   router();
 }
 
+/* =========================================
+   LINK INTERCEPTION
+   ========================================= */
+
 function handleLinkClick(event) {
   if (event.defaultPrevented) {
     return;
   }
 
+  /*
+   * Solo clicks principales.
+   * Esto permite que el click derecho,
+   * rueda del mouse, etc. mantengan
+   * el comportamiento normal.
+   */
+
   if (event.button !== 0) {
     return;
   }
+
+  /*
+   * No interceptar Ctrl + click,
+   * Cmd + click, Shift + click
+   * ni Alt + click.
+   */
 
   if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
     return;
@@ -662,9 +793,17 @@ function handleLinkClick(event) {
     return;
   }
 
+  /*
+   * target="_blank"
+   */
+
   if (link.target === "_blank") {
     return;
   }
+
+  /*
+   * Descargas
+   */
 
   if (link.hasAttribute("download")) {
     return;
@@ -675,6 +814,10 @@ function handleLinkClick(event) {
   if (!href) {
     return;
   }
+
+  /*
+   * Anclas y protocolos especiales.
+   */
 
   if (
     href.startsWith("#") ||
@@ -687,6 +830,10 @@ function handleLinkClick(event) {
 
   const url = new URL(href, window.location.href);
 
+  /*
+   * Enlaces externos.
+   */
+
   if (url.origin !== window.location.origin) {
     return;
   }
@@ -696,31 +843,48 @@ function handleLinkClick(event) {
   navigateTo(url.pathname);
 }
 
-function setupLinkInterception() {
-  document.addEventListener("click", handleLinkClick);
-}
-
-function setupPopState() {
-  window.addEventListener("popstate", router);
-}
+/* =========================================
+   CHARACTER CARDS
+   ========================================= */
 
 function setupCharacterCards() {
-  const characterCards = document.querySelectorAll("[data-character]");
+  const cards = document.querySelectorAll("[data-character]");
 
-  characterCards.forEach((card) => {
+  cards.forEach((card) => {
     card.addEventListener("click", () => {
-      navigateTo("/chat");
+      const character = card.dataset.character;
+
+      /*
+       * Por ahora todos los personajes
+       * llevan a /chat.
+       *
+       * Más adelante utilizaremos este
+       * valor para seleccionar la
+       * personalidad de Gemini.
+       */
+
+      if (character) {
+        navigateTo("/chat");
+      }
     });
   });
 }
 
+/* =========================================
+   ACTIVE NAVIGATION
+   ========================================= */
+
 function updateActiveNavigation(path) {
   const currentPath = normalizePath(path);
 
-  const navigationLinks = document.querySelectorAll(".site-nav__link");
+  const links = document.querySelectorAll(".site-nav__link");
 
-  navigationLinks.forEach((link) => {
+  links.forEach((link) => {
     const href = link.getAttribute("href");
+
+    if (!href) {
+      return;
+    }
 
     const linkPath = normalizePath(
       new URL(href, window.location.href).pathname,
@@ -736,9 +900,23 @@ function updateActiveNavigation(path) {
   });
 }
 
+/* =========================================
+   SETUP
+   ========================================= */
+
+function setupLinkInterception() {
+  document.addEventListener("click", handleLinkClick);
+}
+
+function setupPopState() {
+  window.addEventListener("popstate", router);
+}
+
 function initializeRouter() {
   setupLinkInterception();
+
   setupPopState();
+
   router();
 }
 
