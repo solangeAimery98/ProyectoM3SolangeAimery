@@ -1,16 +1,17 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
       "source": "/chat",
-      "destination": "/src/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/home",
-      "destination": "/src/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/about",
-      "destination": "/src/index.html"
+      "destination": "/index.html"
     }
   ]
 }
