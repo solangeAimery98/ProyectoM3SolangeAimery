@@ -1,7 +1,12 @@
-const messagesContainer = document.querySelector("#chat-messages");
-
 export function renderMessage(role, content) {
+  const messagesContainer = document.querySelector("#chat-messages");
+
+  if (!messagesContainer) {
+    return;
+  }
+
   const message = document.createElement("article");
+
   const bubble = document.createElement("div");
 
   message.classList.add(
@@ -10,9 +15,11 @@ export function renderMessage(role, content) {
   );
 
   bubble.classList.add("message-bubble");
+
   bubble.textContent = content;
 
   message.appendChild(bubble);
+
   messagesContainer.appendChild(message);
 
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
