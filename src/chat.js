@@ -1,9 +1,59 @@
+let conversationHistory = [];
+
+/* =========================================
+   MENSAJES DEL HISTORIAL
+   ========================================= */
+
+function createMessage(role, content) {
+  return {
+    role,
+    parts: [
+      {
+        text: content,
+      },
+    ],
+  };
+}
+
+function addUserMessage(content) {
+  conversationHistory = [
+    ...conversationHistory,
+    createMessage("user", content),
+  ];
+}
+
+function addModelMessage(content) {
+  conversationHistory = [
+    ...conversationHistory,
+    createMessage("model", content),
+  ];
+}
+
+function getRecentHistory() {
+  return conversationHistory.slice(-12);
+}
+
+/* =========================================
+   RESET DE CONVERSACIÓN
+   ========================================= */
+
+export function resetConversationHistory() {
+  conversationHistory = [];
+}
+
+/* =========================================
+   RENDER MENSAJE
+   ========================================= */
+
 export function renderMessage(role, content) {
   const messagesContainer = document.querySelector("#chat-messages");
 
-  if (!messagesContainer) return;
+  if (!messagesContainer) {
+    return;
+  }
 
   const message = document.createElement("article");
+
   const bubble = document.createElement("div");
 
   message.classList.add(
@@ -12,22 +62,32 @@ export function renderMessage(role, content) {
   );
 
   bubble.classList.add("message-bubble");
+
   bubble.textContent = content;
 
   message.appendChild(bubble);
+
   messagesContainer.appendChild(message);
 
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-export async function sendMessageToGemini(message) {
+/* =========================================
+   ENVIAR MENSAJE A GEMINI
+   ========================================= */
+
+export async function sendMessageToGemini(message, character) {
   const response = await fetch("/api/functions", {
     method: "POST",
+
     headers: {
       "Content-Type": "application/json",
     },
+
     body: JSON.stringify({
       message,
+      character,
+      history: getRecentHistory(),
     }),
   });
 
@@ -38,4 +98,20 @@ export async function sendMessageToGemini(message) {
   }
 
   return data.reply;
+}
+
+/* =========================================
+   REGISTRAR MENSAJE DEL USUARIO
+   ========================================= */
+
+export function registerUserMessage(content) {
+  addUserMessage(content);
+}
+
+/* =========================================
+   REGISTRAR RESPUESTA DEL PERSONAJE
+   ========================================= */
+
+export function registerModelMessage(content) {
+  addModelMessage(content);
 }

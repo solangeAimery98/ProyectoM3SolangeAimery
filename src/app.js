@@ -1,4 +1,10 @@
-import { renderMessage, sendMessageToGemini } from "./chat.js";
+import {
+  renderMessage,
+  sendMessageToGemini,
+  registerUserMessage,
+  registerModelMessage,
+  resetConversationHistory,
+} from "./chat.js";
 
 const app = document.querySelector("#app");
 
@@ -7,6 +13,41 @@ const routes = {
   "/home": renderHome,
   "/chat": renderChat,
   "/about": renderAbout,
+};
+
+const characters = {
+  snape: {
+    name: "Severus Snape",
+    role: "Master of Potions",
+    image: "/src/assets/img/snape-avatar.jpeg",
+    label: "PROFESSOR OF POTIONS",
+    placeholder: "Write to Severus Snape...",
+    ariaLabel: "Chat con Severus Snape",
+    quote: "What is it you want?",
+    description: "Inicie una conversación con el profesor de Pociones.",
+  },
+
+  voldemort: {
+    name: "Lord Voldemort",
+    role: "The Dark Lord",
+    image: "/src/assets/img/voldemort.jpeg",
+    label: "THE DARK LORD",
+    placeholder: "Write to Lord Voldemort...",
+    ariaLabel: "Chat con Lord Voldemort",
+    quote: "There is no good and evil. There is only power.",
+    description: "Inicie una conversación con el Señor Tenebroso.",
+  },
+
+  dumbledore: {
+    name: "Albus Dumbledore",
+    role: "Headmaster of Hogwarts",
+    image: "/src/assets/img/dumdledore.jpeg",
+    label: "HEADMASTER OF HOGWARTS",
+    placeholder: "Write to Albus Dumbledore...",
+    ariaLabel: "Chat con Albus Dumbledore",
+    quote: "Happiness can be found even in the darkest of times.",
+    description: "Inicie una conversación con el director de Hogwarts.",
+  },
 };
 
 const messages = [
@@ -365,10 +406,14 @@ function renderHome() {
    ========================================= */
 
 function renderChat() {
+  const selectedCharacter =
+    sessionStorage.getItem("selectedCharacter") || "snape";
+  const character = characters[selectedCharacter] || characters.snape;
+
   app.innerHTML = `
     <section
       class="chat-panel"
-      aria-label="Chat con Severus Snape"
+      aria-label="${character.ariaLabel}"
     >
 
       <!-- =====================================
@@ -390,8 +435,8 @@ function renderChat() {
         <div class="character-avatar">
 
           <img
-            src="/src/assets/img/snape-avatar.jpeg"
-            alt="Severus Snape"
+            src="${character.image}"
+            alt="${character.name}"
           />
 
         </div>
@@ -400,12 +445,12 @@ function renderChat() {
         <div class="character-info">
 
           <p class="character-label">
-            PROFESSOR OF POTIONS
+            ${character.label}
           </p>
 
 
           <h2>
-            Severus Snape
+            ${character.name}
           </h2>
 
 
@@ -419,7 +464,7 @@ function renderChat() {
 
         <div
           class="character-status"
-          aria-label="Severus Snape está disponible"
+          aria-label="${character.name} está disponible"
         >
 
           <span class="status-dot"></span>
@@ -440,7 +485,7 @@ function renderChat() {
       <section
         class="chat-messages"
         id="chat-messages"
-        aria-label="Conversación con Severus Snape"
+        aria-label="Conversación con ${character.name}"
         aria-live="polite"
       >
 
@@ -489,12 +534,12 @@ function renderChat() {
 
 
             <h2>
-              Severus Snape
+              ${character.name}
             </h2>
 
 
             <p class="empty-title">
-              Master of Potions
+              ${character.role}
             </p>
 
 
@@ -505,7 +550,7 @@ function renderChat() {
               </span>
 
               <p>
-                What is it you want?
+                ${character.quote}
               </p>
 
               <span
@@ -518,7 +563,7 @@ function renderChat() {
 
 
             <p class="empty-description">
-              Inicie una conversación con el profesor de Pociones.
+              ${character.description}
             </p>
 
 
@@ -569,7 +614,7 @@ function renderChat() {
             id="message-input"
             name="message"
             class="message-input"
-            placeholder="Write to Severus Snape..."
+            placeholder="${character.placeholder}"
             autocomplete="off"
             required
           />
@@ -616,6 +661,8 @@ function setupChatForm() {
     return;
   }
 
+  const character = sessionStorage.getItem("selectedCharacter") || "snape";
+
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -625,30 +672,17 @@ function setupChatForm() {
       return;
     }
 
-    /*
-     * Mostrar inmediatamente el mensaje
-     * del usuario.
-     */
-
     renderMessage("user", message);
+    registerUserMessage(message);
 
     input.value = "";
     input.focus();
 
     try {
-      /*
-       * Enviamos el mensaje a nuestra
-       * Serverless Function de Vercel.
-       */
-
-      const reply = await sendMessageToGemini(message);
-
-      /*
-       * Mostramos la respuesta de Gemini
-       * como mensaje del personaje.
-       */
+      const reply = await sendMessageToGemini(message, character);
 
       renderMessage("snape", reply);
+      registerModelMessage(reply);
     } catch (error) {
       console.error("Error en el chat:", error);
 
@@ -881,22 +915,15 @@ function handleLinkClick(event) {
    ========================================= */
 
 function setupCharacterCards() {
-  const cards = document.querySelectorAll("[data-character]");
+  const cards = document.querySelectorAll(".character-card");
 
   cards.forEach((card) => {
     card.addEventListener("click", () => {
-      const character = card.dataset.character;
+      const character = card.dataset.character || "snape";
 
-      /*
-       * Guardamos el personaje seleccionado.
-       * Por ahora el chat visual sigue mostrando
-       * a Snape; después conectaremos este valor
-       * con la personalidad de Gemini.
-       */
+      sessionStorage.setItem("selectedCharacter", character);
 
-      if (character) {
-        sessionStorage.setItem("selectedCharacter", character);
-      }
+      resetConversationHistory();
 
       navigateTo("/chat");
     });
