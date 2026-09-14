@@ -1,4 +1,4 @@
-import { renderMessage } from "./chat.js";
+import { renderMessage, sendMessageToGemini } from "./chat.js";
 
 const app = document.querySelector("#app");
 
@@ -25,6 +25,10 @@ const messages = [
     content: "Entonces hable. No tengo toda la noche.",
   },
 ];
+
+/* =========================================
+   ROUTER
+   ========================================= */
 
 function normalizePath(path) {
   if (!path) {
@@ -596,6 +600,64 @@ function renderChat() {
   messages.forEach((message) => {
     renderMessage(message.role, message.content);
   });
+
+  setupChatForm();
+}
+
+/* =========================================
+   FORMULARIO DEL CHAT
+   ========================================= */
+
+function setupChatForm() {
+  const form = document.querySelector("#chat-form");
+  const input = document.querySelector("#message-input");
+
+  if (!form || !input) {
+    return;
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const message = input.value.trim();
+
+    if (!message) {
+      return;
+    }
+
+    /*
+     * Mostrar inmediatamente el mensaje
+     * del usuario.
+     */
+
+    renderMessage("user", message);
+
+    input.value = "";
+    input.focus();
+
+    try {
+      /*
+       * Enviamos el mensaje a nuestra
+       * Serverless Function de Vercel.
+       */
+
+      const reply = await sendMessageToGemini(message);
+
+      /*
+       * Mostramos la respuesta de Gemini
+       * como mensaje del personaje.
+       */
+
+      renderMessage("snape", reply);
+    } catch (error) {
+      console.error("Error en el chat:", error);
+
+      renderMessage(
+        "snape",
+        "Parece que algo salió mal. Inténtelo nuevamente.",
+      );
+    }
+  });
 }
 
 /* =========================================
@@ -766,22 +828,9 @@ function handleLinkClick(event) {
     return;
   }
 
-  /*
-   * Solo clicks principales.
-   * Esto permite que el click derecho,
-   * rueda del mouse, etc. mantengan
-   * el comportamiento normal.
-   */
-
   if (event.button !== 0) {
     return;
   }
-
-  /*
-   * No interceptar Ctrl + click,
-   * Cmd + click, Shift + click
-   * ni Alt + click.
-   */
 
   if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
     return;
@@ -793,17 +842,9 @@ function handleLinkClick(event) {
     return;
   }
 
-  /*
-   * target="_blank"
-   */
-
   if (link.target === "_blank") {
     return;
   }
-
-  /*
-   * Descargas
-   */
 
   if (link.hasAttribute("download")) {
     return;
@@ -815,10 +856,6 @@ function handleLinkClick(event) {
     return;
   }
 
-  /*
-   * Anclas y protocolos especiales.
-   */
-
   if (
     href.startsWith("#") ||
     href.startsWith("mailto:") ||
@@ -829,10 +866,6 @@ function handleLinkClick(event) {
   }
 
   const url = new URL(href, window.location.href);
-
-  /*
-   * Enlaces externos.
-   */
 
   if (url.origin !== window.location.origin) {
     return;
@@ -855,17 +888,17 @@ function setupCharacterCards() {
       const character = card.dataset.character;
 
       /*
-       * Por ahora todos los personajes
-       * llevan a /chat.
-       *
-       * Más adelante utilizaremos este
-       * valor para seleccionar la
-       * personalidad de Gemini.
+       * Guardamos el personaje seleccionado.
+       * Por ahora el chat visual sigue mostrando
+       * a Snape; después conectaremos este valor
+       * con la personalidad de Gemini.
        */
 
       if (character) {
-        navigateTo("/chat");
+        sessionStorage.setItem("selectedCharacter", character);
       }
+
+      navigateTo("/chat");
     });
   });
 }
