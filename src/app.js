@@ -50,22 +50,63 @@ const characters = {
   },
 };
 
-const messages = [
-  {
-    role: "snape",
-    content: "¿Qué desea?",
-  },
+/* =========================================
+   MENSAJES INICIALES
+   ========================================= */
 
-  {
-    role: "user",
-    content: "Quería hablar contigo, profesor.",
-  },
+const initialMessages = {
+  snape: [
+    {
+      role: "snape",
+      content: "¿Qué desea?",
+    },
 
-  {
-    role: "snape",
-    content: "Entonces hable. No tengo toda la noche.",
-  },
-];
+    {
+      role: "user",
+      content: "Quería hablar contigo, profesor.",
+    },
+
+    {
+      role: "snape",
+      content: "Entonces hable. No tengo toda la noche.",
+    },
+  ],
+
+  voldemort: [
+    {
+      role: "voldemort",
+      content: "¿Has venido a buscarme?",
+    },
+
+    {
+      role: "user",
+      content: "Sí. Quería hablar contigo.",
+    },
+
+    {
+      role: "voldemort",
+      content: "Entonces habla. No desperdicies mi tiempo.",
+    },
+  ],
+
+  dumbledore: [
+    {
+      role: "dumbledore",
+      content: "Ah, has venido. Me alegra verte.",
+    },
+
+    {
+      role: "user",
+      content: "Quería hablar contigo, profesor.",
+    },
+
+    {
+      role: "dumbledore",
+      content:
+        "Entonces siéntate. Siempre hay tiempo para una buena conversación.",
+    },
+  ],
+};
 
 /* =========================================
    ROUTER
@@ -408,7 +449,11 @@ function renderHome() {
 function renderChat() {
   const selectedCharacter =
     sessionStorage.getItem("selectedCharacter") || "snape";
+
   const character = characters[selectedCharacter] || characters.snape;
+
+  const characterMessages =
+    initialMessages[selectedCharacter] || initialMessages.snape;
 
   app.innerHTML = `
     <section
@@ -642,7 +687,7 @@ function renderChat() {
     </section>
   `;
 
-  messages.forEach((message) => {
+  characterMessages.forEach((message) => {
     renderMessage(message.role, message.content);
   });
 
