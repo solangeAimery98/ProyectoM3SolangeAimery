@@ -4,6 +4,8 @@ import {
   registerUserMessage,
   registerModelMessage,
   resetConversationHistory,
+  showTypingIndicator,
+  hideTypingIndicator,
 } from "./chat.js";
 
 const app = document.querySelector("#app");
@@ -724,15 +726,21 @@ function setupChatForm() {
     input.focus();
 
     try {
+      showTypingIndicator(character);
+
       const reply = await sendMessageToGemini(message, character);
 
-      renderMessage("snape", reply);
+      hideTypingIndicator();
+
+      renderMessage(character, reply);
       registerModelMessage(reply);
     } catch (error) {
+      hideTypingIndicator();
+
       console.error("Error en el chat:", error);
 
       renderMessage(
-        "snape",
+        character,
         "Parece que algo salió mal. Inténtelo nuevamente.",
       );
     }

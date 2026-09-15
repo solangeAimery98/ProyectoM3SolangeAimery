@@ -1234,7 +1234,7 @@ body {
   /*
    * Importante:
    * min-height: 0 permite que esta zona se reduzca
-   * dentro del chat en lugar de empujar la página.
+   * dentro del chat en lugar de empujar la pÃ¡gina.
    */
   min-height: 0;
 
@@ -1302,7 +1302,7 @@ body {
   position: relative;
 
   /*
-   * Cartel más compacto.
+   * Cartel mÃ¡s compacto.
    */
   width: min(100%, 300px);
 
@@ -1548,7 +1548,9 @@ body {
   animation: message-enter 0.35s ease-out both;
 }
 
-.message--snape {
+.message--snape,
+.message--voldemort,
+.message--dumbledore {
   justify-content: flex-start;
 }
 
@@ -1592,7 +1594,9 @@ body {
    SNAPE MESSAGE
    ========================================= */
 
-.message--snape .message-bubble {
+.message--snape .message-bubble,
+.message--voldemort .message-bubble,
+.message--dumbledore .message-bubble {
   background: linear-gradient(
     135deg,
     rgba(31, 34, 42, 0.98),
@@ -1624,6 +1628,29 @@ body {
   letter-spacing: 1.5px;
 }
 
+.message--voldemort .message-bubble::before,
+.message--dumbledore .message-bubble::before {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: var(--color-gold);
+
+  font-family: var(--font-ui);
+  font-size: 7px;
+  font-weight: 600;
+
+  letter-spacing: 1.5px;
+}
+
+.message--voldemort .message-bubble::before {
+  content: "VOLDEMORT";
+}
+
+.message--dumbledore .message-bubble::before {
+  content: "DUMBLEDORE";
+}
+
 /* =========================================
    USER MESSAGE
    ========================================= */
@@ -1644,6 +1671,87 @@ body {
   border-radius: 12px 3px 3px 12px;
 
   box-shadow: 0 7px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================
+   TYPING INDICATOR
+   ========================================= */
+
+.message--typing {
+  justify-content: flex-start;
+}
+
+.message--typing .message-bubble {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 9px 13px;
+
+  color: var(--color-text-muted);
+
+  font-family: var(--font-ui);
+  font-size: 8px;
+
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+
+  background: rgba(19, 21, 27, 0.82);
+
+  border: 1px solid rgba(180, 154, 97, 0.14);
+  border-left: 2px solid rgba(77, 102, 87, 0.55);
+
+  border-radius: 3px 10px 10px 3px;
+}
+
+.message--typing .message-bubble::before {
+  content: none;
+}
+
+.typing-label {
+  white-space: nowrap;
+}
+
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 3px;
+}
+
+.typing-dots span {
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background: var(--color-gold);
+
+  opacity: 0.3;
+
+  animation: typing-dot 1.2s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typing-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
 }
 
 /* =========================================
@@ -1846,7 +1954,7 @@ body {
 }
 
 /* =========================================
-   TABLET — 768px
+   TABLET â€” 768px
    ========================================= */
 
 @media (min-width: 768px) {
@@ -1921,7 +2029,7 @@ body {
   }
 
   /* =========================================
-     CHAT — TABLET
+     CHAT â€” TABLET
      ========================================= */
 
   .chat-panel {
@@ -1968,7 +2076,7 @@ body {
     padding: 28px 32px;
   }
 
-  /* Cartel de introducción más compacto */
+  /* Cartel de introducciÃ³n mÃ¡s compacto */
   .empty-card {
     width: 320px;
 
@@ -2004,7 +2112,7 @@ body {
 }
 
 /* =========================================
-   DESKTOP — 1024px
+   DESKTOP â€” 1024px
    ========================================= */
 
 @media (min-width: 1024px) {
@@ -2054,7 +2162,7 @@ body {
   }
 
   /* =========================================
-     CHAT — DESKTOP
+     CHAT â€” DESKTOP
      ========================================= */
 
   .chat-panel {
@@ -2122,7 +2230,7 @@ body {
 }
 
 /* =========================================
-   LARGE DESKTOP — 1400px
+   LARGE DESKTOP â€” 1400px
    ========================================= */
 
 @media (min-width: 1400px) {
