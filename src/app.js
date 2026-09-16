@@ -623,7 +623,6 @@ function renderChat() {
             class="message-input"
             placeholder="${character.placeholder}"
             autocomplete="off"
-            required
           />
 
         </div>
