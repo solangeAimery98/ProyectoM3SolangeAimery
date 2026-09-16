@@ -6,6 +6,7 @@ import {
   resetConversationHistory,
   showTypingIndicator,
   hideTypingIndicator,
+  getMockResponse,
 } from "./chat.js";
 
 const app = document.querySelector("#app");
@@ -157,17 +158,14 @@ function renderHome() {
           <span></span>
         </div>
 
-
         <p class="selection-overline">
           THE WIZARDING WORLD
         </p>
-
 
         <h1>
           Chateá con tu<br />
           personaje favorito
         </h1>
-
 
         <p class="selection-description">
           Elegí una personalidad y comenzá una conversación.
@@ -177,17 +175,7 @@ function renderHome() {
 
       </div>
 
-
-      <!-- =====================================
-           CHARACTER CARDS
-           ===================================== -->
-
       <div class="character-grid">
-
-
-        <!-- =====================================
-             SEVERUS SNAPE
-             ===================================== -->
 
         <button
           class="character-card character-card--active"
@@ -209,23 +197,19 @@ function renderHome() {
 
           </div>
 
-
           <div class="character-card__content">
 
             <p class="character-card__label">
               AVAILABLE NOW
             </p>
 
-
             <h2>
               Severus Snape
             </h2>
 
-
             <p class="character-card__role">
               Professor of Potions
             </p>
-
 
             <div
               class="character-card__divider"
@@ -236,11 +220,9 @@ function renderHome() {
               <span></span>
             </div>
 
-
             <p class="character-card__description">
               El maestro de Pociones te espera.
             </p>
-
 
             <span class="character-card__cta">
               Entrar a la conversación
@@ -248,7 +230,6 @@ function renderHome() {
             </span>
 
           </div>
-
 
           <span
             class="character-card__corner character-card__corner--tl"
@@ -267,11 +248,6 @@ function renderHome() {
           ></span>
 
         </button>
-
-
-        <!-- =====================================
-             LORD VOLDEMORT
-             ===================================== -->
 
         <button
           class="character-card character-card--active"
@@ -293,23 +269,19 @@ function renderHome() {
 
           </div>
 
-
           <div class="character-card__content">
 
             <p class="character-card__label">
               AVAILABLE NOW
             </p>
 
-
             <h2>
               Lord Voldemort
             </h2>
 
-
             <p class="character-card__role">
               The Dark Lord
             </p>
-
 
             <div
               class="character-card__divider"
@@ -320,11 +292,9 @@ function renderHome() {
               <span></span>
             </div>
 
-
             <p class="character-card__description">
               El Señor Tenebroso está dispuesto a hablar.
             </p>
-
 
             <span class="character-card__cta">
               Entrar a la conversación
@@ -332,7 +302,6 @@ function renderHome() {
             </span>
 
           </div>
-
 
           <span
             class="character-card__corner character-card__corner--tl"
@@ -351,11 +320,6 @@ function renderHome() {
           ></span>
 
         </button>
-
-
-        <!-- =====================================
-             ALBUS DUMBLEDORE
-             ===================================== -->
 
         <button
           class="character-card character-card--active"
@@ -377,23 +341,19 @@ function renderHome() {
 
           </div>
 
-
           <div class="character-card__content">
 
             <p class="character-card__label">
               AVAILABLE NOW
             </p>
 
-
             <h2>
               Albus Dumbledore
             </h2>
 
-
             <p class="character-card__role">
               Headmaster of Hogwarts
             </p>
-
 
             <div
               class="character-card__divider"
@@ -404,11 +364,9 @@ function renderHome() {
               <span></span>
             </div>
 
-
             <p class="character-card__description">
               El director de Hogwarts te aguarda.
             </p>
-
 
             <span class="character-card__cta">
               Entrar a la conversación
@@ -416,7 +374,6 @@ function renderHome() {
             </span>
 
           </div>
-
 
           <span
             class="character-card__corner character-card__corner--tl"
@@ -445,6 +402,38 @@ function renderHome() {
 }
 
 /* =========================================
+   ESTADO DE CONEXIÓN
+   ========================================= */
+
+function updateConnectionStatus(status) {
+  const statusContainer = document.querySelector(".character-status");
+  const statusText = document.querySelector(".status-text");
+
+  if (!statusContainer || !statusText) {
+    return;
+  }
+
+  statusContainer.classList.remove(
+    "character-status--connecting",
+    "character-status--offline",
+  );
+
+  if (status === "connecting") {
+    statusText.textContent = "Conectando...";
+    statusContainer.classList.add("character-status--connecting");
+    return;
+  }
+
+  if (status === "offline") {
+    statusText.textContent = "Conexión interrumpida";
+    statusContainer.classList.add("character-status--offline");
+    return;
+  }
+
+  statusText.textContent = "Disponible";
+}
+
+/* =========================================
    CHAT
    ========================================= */
 
@@ -463,10 +452,6 @@ function renderChat() {
       aria-label="${character.ariaLabel}"
     >
 
-      <!-- =====================================
-           CHAT HEADER
-           ===================================== -->
-
       <header class="chat-header">
 
         <div
@@ -478,7 +463,6 @@ function renderChat() {
           <span></span>
         </div>
 
-
         <div class="character-avatar">
 
           <img
@@ -488,18 +472,15 @@ function renderChat() {
 
         </div>
 
-
         <div class="character-info">
 
           <p class="character-label">
             ${character.label}
           </p>
 
-
           <h2>
             ${character.name}
           </h2>
-
 
           <div
             class="character-line"
@@ -507,7 +488,6 @@ function renderChat() {
           ></div>
 
         </div>
-
 
         <div
           class="character-status"
@@ -523,11 +503,6 @@ function renderChat() {
         </div>
 
       </header>
-
-
-      <!-- =====================================
-           MESSAGES
-           ===================================== -->
 
       <section
         class="chat-messages"
@@ -559,16 +534,13 @@ function renderChat() {
               class="card-corner card-corner--bottom-right"
             ></div>
 
-
             <div class="empty-symbol">
               ✦
             </div>
 
-
             <p class="empty-overline">
               PRIVATE CORRESPONDENCE
             </p>
-
 
             <div
               class="empty-divider"
@@ -579,16 +551,13 @@ function renderChat() {
               <span></span>
             </div>
 
-
             <h2>
               ${character.name}
             </h2>
 
-
             <p class="empty-title">
               ${character.role}
             </p>
-
 
             <div class="empty-quote">
 
@@ -608,11 +577,9 @@ function renderChat() {
 
             </div>
 
-
             <p class="empty-description">
               ${character.description}
             </p>
-
 
             <div
               class="empty-symbol empty-symbol--bottom"
@@ -625,11 +592,6 @@ function renderChat() {
         </div>
 
       </section>
-
-
-      <!-- =====================================
-           COMPOSER
-           ===================================== -->
 
       <form
         class="chat-composer"
@@ -645,14 +607,12 @@ function renderChat() {
           <span></span>
         </div>
 
-
         <label
           class="visually-hidden"
           for="message-input"
         >
           Escribe tu mensaje
         </label>
-
 
         <div class="input-wrapper">
 
@@ -667,7 +627,6 @@ function renderChat() {
           />
 
         </div>
-
 
         <button
           type="submit"
@@ -726,11 +685,15 @@ function setupChatForm() {
     input.focus();
 
     try {
+      updateConnectionStatus("connecting");
+
       showTypingIndicator(character);
 
       const reply = await sendMessageToGemini(message, character);
 
       hideTypingIndicator();
+
+      updateConnectionStatus("online");
 
       renderMessage(character, reply);
       registerModelMessage(reply);
@@ -739,10 +702,16 @@ function setupChatForm() {
 
       console.error("Error en el chat:", error);
 
-      renderMessage(
-        character,
-        "Parece que algo salió mal. Inténtelo nuevamente.",
-      );
+      updateConnectionStatus("offline");
+
+      const mockReply = getMockResponse(character);
+
+      renderMessage(character, mockReply);
+      registerModelMessage(mockReply);
+
+      setTimeout(() => {
+        updateConnectionStatus("online");
+      }, 1800);
     }
   });
 }
@@ -766,17 +735,14 @@ function renderAbout() {
           <span></span>
         </div>
 
-
         <p class="selection-overline">
           ABOUT ARCANA
         </p>
-
 
         <h1>
           Sobre<br />
           Arcana
         </h1>
-
 
         <p class="selection-description">
           Arcana es una experiencia de conversación
@@ -784,14 +750,12 @@ function renderAbout() {
           del mundo mágico.
         </p>
 
-
         <p class="selection-description">
           Cada personaje tiene su propia personalidad,
           historia y manera de responder. La aplicación
           combina una interfaz inspirada en el universo
           mágico con inteligencia artificial.
         </p>
-
 
         <div
           class="selection-ornament"
@@ -802,14 +766,12 @@ function renderAbout() {
           <span></span>
         </div>
 
-
         <p class="selection-description">
           Este proyecto forma parte del Proyecto
           Integrador M3 y está desarrollado utilizando
           HTML, CSS y JavaScript Vanilla, sin frameworks
           ni librerías externas.
         </p>
-
 
         <a
           class="site-nav__link"
@@ -844,21 +806,17 @@ function renderNotFound() {
           <span></span>
         </div>
 
-
         <p class="selection-overline">
           ARCANA
         </p>
-
 
         <h1>
           404
         </h1>
 
-
         <p class="selection-description">
           La página que estás buscando no existe.
         </p>
-
 
         <a
           class="site-nav__link"

@@ -1224,6 +1224,21 @@ body {
   }
 }
 
+.character-status--connecting .status-dot {
+  background: var(--color-gold);
+  box-shadow: 0 0 7px rgba(180, 154, 97, 0.7);
+}
+
+.character-status--offline .status-dot {
+  background: #8b5f5f;
+  box-shadow: 0 0 7px rgba(139, 95, 95, 0.65);
+  animation: none;
+}
+
+.character-status--offline {
+  color: #a78b8b;
+}
+
 /* =========================================
    MESSAGES AREA
    ========================================= */
@@ -2275,4 +2290,22 @@ body {
 
     transition-duration: 0.01ms !important;
   }
+}
+/* =========================================
+   ESTADOS DE CONEXIÓN
+   ========================================= */
+
+.character-status--connecting .status-dot {
+  background: var(--color-gold);
+  box-shadow: 0 0 7px rgba(180, 154, 97, 0.7);
+}
+
+.character-status--offline .status-dot {
+  background: #8b5f5f;
+  box-shadow: 0 0 7px rgba(139, 95, 95, 0.65);
+  animation: none;
+}
+
+.character-status--offline {
+  color: #a78b8b;
 }
