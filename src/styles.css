@@ -2309,3 +2309,13 @@ body {
 .character-status--offline {
   color: #a78b8b;
 }
+
+/* =========================================
+   MOBILE INPUT — PREVENT AUTO-ZOOM
+   ========================================= */
+
+@media (max-width: 767px) {
+  .message-input {
+    font-size: 16px;
+  }
+}
