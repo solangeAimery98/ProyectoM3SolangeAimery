@@ -226,7 +226,7 @@ function renderHome() {
 
             <span class="character-card__cta">
               Entrar a la conversación
-              <span>↗</span>
+              <span>&#x2197;&#xFE0E;</span>
             </span>
 
           </div>
@@ -298,7 +298,7 @@ function renderHome() {
 
             <span class="character-card__cta">
               Entrar a la conversación
-              <span>↗</span>
+              <span>&#x2197;&#xFE0E;</span>
             </span>
 
           </div>
@@ -370,7 +370,7 @@ function renderHome() {
 
             <span class="character-card__cta">
               Entrar a la conversación
-              <span>↗</span>
+              <span>&#x2197;&#xFE0E;</span>
             </span>
 
           </div>
@@ -638,7 +638,7 @@ function renderChat() {
             class="send-icon"
             aria-hidden="true"
           >
-            ↗
+            &#x2197;&#xFE0E;
           </span>
 
         </button>
