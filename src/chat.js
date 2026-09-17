@@ -1,5 +1,15 @@
 let conversationHistory = [];
 
+const userMessageCounts = JSON.parse(
+  sessionStorage.getItem("userMessageCounts") || "null",
+) || {
+  snape: 0,
+  voldemort: 0,
+  dumbledore: 0,
+};
+
+const MAX_USER_MESSAGES = 20;
+
 /* =========================================
    RESPUESTAS ALTERNATIVAS
    ========================================= */
@@ -59,6 +69,19 @@ function addUserMessage(content) {
   ];
 }
 
+function incrementUserMessageCount(character) {
+  if (!(character in userMessageCounts)) {
+    return;
+  }
+
+  userMessageCounts[character] += 1;
+
+  sessionStorage.setItem(
+    "userMessageCounts",
+    JSON.stringify(userMessageCounts),
+  );
+}
+
 function addModelMessage(content) {
   conversationHistory = [
     ...conversationHistory,
@@ -68,6 +91,14 @@ function addModelMessage(content) {
 
 function getRecentHistory() {
   return conversationHistory.slice(-12);
+}
+
+export function getUserMessageCount(character) {
+  return userMessageCounts[character] || 0;
+}
+
+export function hasReachedMessageLimit(character) {
+  return getUserMessageCount(character) >= MAX_USER_MESSAGES;
 }
 
 /* =========================================
@@ -207,8 +238,9 @@ export async function sendMessageToGemini(message, character) {
    REGISTRAR MENSAJE DEL USUARIO
    ========================================= */
 
-export function registerUserMessage(content) {
+export function registerUserMessage(content, character) {
   addUserMessage(content);
+  incrementUserMessageCount(character);
 }
 
 /* =========================================

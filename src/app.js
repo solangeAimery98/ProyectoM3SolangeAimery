@@ -7,6 +7,8 @@ import {
   showTypingIndicator,
   hideTypingIndicator,
   getMockResponse,
+  hasReachedMessageLimit,
+  getUserMessageCount,
 } from "./chat.js";
 
 const app = document.querySelector("#app");
@@ -607,6 +609,35 @@ function renderChat() {
           <span></span>
         </div>
 
+        <div
+          class="message-limit"
+          aria-live="polite"
+        >
+
+          <div class="message-limit__meta">
+
+            <span class="message-limit__label">
+              ARCANA · CORRESPONDENCE
+            </span>
+
+            <span class="message-limit__count">
+              0 / 20
+            </span>
+
+          </div>
+
+          <div
+            class="message-limit__track"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="20"
+            aria-valuenow="0"
+          >
+            <span class="message-limit__fill"></span>
+          </div>
+
+        </div>
+
         <label
           class="visually-hidden"
           for="message-input"
@@ -658,6 +689,47 @@ function renderChat() {
    FORMULARIO DEL CHAT
    ========================================= */
 
+function updateMessageLimitState(character) {
+  const input = document.querySelector("#message-input");
+  const button = document.querySelector(".send-button");
+  const fill = document.querySelector(".message-limit__fill");
+  const countElement = document.querySelector(".message-limit__count");
+  const track = document.querySelector(".message-limit__track");
+
+  if (!input || !button) {
+    return;
+  }
+
+  const count = getUserMessageCount(character);
+  const limitReached = hasReachedMessageLimit(character);
+  const progress = Math.min((count / 20) * 100, 100);
+
+  if (fill) {
+    fill.style.width = `${progress}%`;
+  }
+
+  if (countElement) {
+    countElement.textContent = `${count} / 20`;
+  }
+
+  if (track) {
+    track.setAttribute("aria-valuenow", count);
+  }
+
+  input.disabled = limitReached;
+  button.disabled = limitReached;
+
+  button.classList.toggle(
+    "send-button--limit",
+
+    limitReached,
+  );
+
+  if (limitReached) {
+    input.placeholder = "Límite de 20 mensajes alcanzado";
+  }
+}
+
 function setupChatForm() {
   const form = document.querySelector("#chat-form");
   const input = document.querySelector("#message-input");
@@ -667,6 +739,7 @@ function setupChatForm() {
   }
 
   const character = sessionStorage.getItem("selectedCharacter") || "snape";
+  updateMessageLimitState(character);
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -677,11 +750,24 @@ function setupChatForm() {
       return;
     }
 
+    if (hasReachedMessageLimit(character)) {
+      renderMessage(
+        "model",
+        "Has alcanzado el límite de 20 mensajes para este personaje.",
+      );
+      return;
+    }
+
     renderMessage("user", message);
-    registerUserMessage(message);
+    registerUserMessage(message, character);
 
     input.value = "";
-    input.focus();
+
+    updateMessageLimitState(character);
+
+    if (!hasReachedMessageLimit(character)) {
+      input.focus();
+    }
 
     try {
       updateConnectionStatus("connecting");
