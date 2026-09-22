@@ -9,6 +9,8 @@ import {
   getMockResponse,
   hasReachedMessageLimit,
   getUserMessageCount,
+  loadConversation,
+  getConversationHistory,
 } from "./chat.js";
 
 const app = document.querySelector("#app");
@@ -446,9 +448,10 @@ function renderChat() {
     sessionStorage.getItem("selectedCharacter") || "snape";
 
   const character = characters[selectedCharacter] || characters.snape;
-
-  const characterMessages =
-    initialMessages[selectedCharacter] || initialMessages.snape;
+  const hasSavedConversation = loadConversation(selectedCharacter);
+  const characterMessages = hasSavedConversation
+    ? null
+    : initialMessages[selectedCharacter] || initialMessages.snape;
 
   app.innerHTML = `
     <section
@@ -680,9 +683,19 @@ function renderChat() {
     </section>
   `;
 
-  characterMessages.forEach((message) => {
-    renderMessage(message.role, message.content);
-  });
+  if (characterMessages) {
+    characterMessages.forEach((message) => {
+      renderMessage(message.role, message.content);
+    });
+  } else {
+    const savedHistory = getConversationHistory();
+
+    savedHistory.forEach((message) => {
+      const role = message.role === "user" ? "user" : selectedCharacter;
+
+      renderMessage(role, message.parts[0].text);
+    });
+  }
 
   setupChatForm();
 }
@@ -786,7 +799,7 @@ function setupChatForm() {
       updateConnectionStatus("online");
 
       renderMessage(character, reply);
-      registerModelMessage(reply);
+      registerModelMessage(reply, character);
     } catch (error) {
       hideTypingIndicator();
 
@@ -797,7 +810,7 @@ function setupChatForm() {
       const mockReply = getMockResponse(character);
 
       renderMessage(character, mockReply);
-      registerModelMessage(mockReply);
+      registerModelMessage(mockReply, character);
 
       setTimeout(() => {
         updateConnectionStatus("online");

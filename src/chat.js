@@ -10,6 +10,9 @@ const userMessageCounts = JSON.parse(
 
 const MAX_USER_MESSAGES = 20;
 
+const CHAT_STORAGE_KEY = "arcanaConversations";
+const CHAT_STORAGE_DURATION = 24 * 60 * 60 * 1000;
+
 /* =========================================
    RESPUESTAS ALTERNATIVAS
    ========================================= */
@@ -75,11 +78,6 @@ function incrementUserMessageCount(character) {
   }
 
   userMessageCounts[character] += 1;
-
-  sessionStorage.setItem(
-    "userMessageCounts",
-    JSON.stringify(userMessageCounts),
-  );
 }
 
 function addModelMessage(content) {
@@ -91,6 +89,50 @@ function addModelMessage(content) {
 
 function getRecentHistory() {
   return conversationHistory.slice(-12);
+}
+
+export function getConversationHistory() {
+  return [...conversationHistory];
+}
+
+function saveConversation(character) {
+  const conversations = JSON.parse(
+    localStorage.getItem(CHAT_STORAGE_KEY) || "{}",
+  );
+
+  conversations[character] = {
+    messages: conversationHistory,
+    savedAt: Date.now(),
+  };
+
+  localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(conversations));
+}
+
+export function loadConversation(character) {
+  const conversations = JSON.parse(
+    localStorage.getItem(CHAT_STORAGE_KEY) || "{}",
+  );
+
+  const savedConversation = conversations[character];
+
+  if (!savedConversation) {
+    return false;
+  }
+
+  const isExpired =
+    Date.now() - savedConversation.savedAt > CHAT_STORAGE_DURATION;
+
+  if (isExpired) {
+    delete conversations[character];
+
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(conversations));
+
+    return false;
+  }
+
+  conversationHistory = savedConversation.messages || [];
+
+  return conversationHistory.length > 0;
 }
 
 export function getUserMessageCount(character) {
@@ -241,12 +283,14 @@ export async function sendMessageToGemini(message, character) {
 export function registerUserMessage(content, character) {
   addUserMessage(content);
   incrementUserMessageCount(character);
+  saveConversation(character);
 }
 
 /* =========================================
    REGISTRAR RESPUESTA DEL PERSONAJE
    ========================================= */
 
-export function registerModelMessage(content) {
+export function registerModelMessage(content, character) {
   addModelMessage(content);
+  saveConversation(character);
 }
