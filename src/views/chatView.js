@@ -14,15 +14,19 @@ import { setupChatForm } from "../events/chatEvents.js";
 
 import { updateMessageLimitState } from "../components/messageLimit.js";
 
+import { getLanguage, getLocalizedValue } from "../utils/language.js";
+
 export function renderChat(app) {
   const selectedCharacter = getSelectedCharacter();
 
   const character = characters[selectedCharacter] || characters.snape;
 
+  const language = getLanguage();
+
   app.innerHTML = `
     <section
       class="chat-panel"
-      aria-label="${character.ariaLabel}"
+      aria-label="${getLocalizedValue(character.ariaLabel)}"
     >
 
       <header class="chat-header">
@@ -48,7 +52,7 @@ export function renderChat(app) {
         <div class="character-info">
 
           <p class="character-label">
-            ${character.label}
+            ${getLocalizedValue(character.label)}
           </p>
 
           <h2>
@@ -64,13 +68,17 @@ export function renderChat(app) {
 
         <div
           class="character-status"
-          aria-label="${character.name} está disponible"
+          aria-label="${
+            language === "es"
+              ? `${character.name} está disponible`
+              : `${character.name} is available`
+          }"
         >
 
           <span class="status-dot"></span>
 
           <span class="status-text">
-            Disponible
+            ${language === "es" ? "Disponible" : "Available"}
           </span>
 
         </div>
@@ -80,7 +88,11 @@ export function renderChat(app) {
       <section
         class="chat-messages"
         id="chat-messages"
-        aria-label="Conversación con ${character.name}"
+        aria-label="${
+          language === "es"
+            ? `Conversación con ${character.name}`
+            : `Conversation with ${character.name}`
+        }"
         aria-live="polite"
       >
 
@@ -112,7 +124,11 @@ export function renderChat(app) {
             </div>
 
             <p class="empty-overline">
-              PRIVATE CORRESPONDENCE
+              ${
+                language === "es"
+                  ? "CORRESPONDENCIA PRIVADA"
+                  : "PRIVATE CORRESPONDENCE"
+              }
             </p>
 
             <div
@@ -129,7 +145,7 @@ export function renderChat(app) {
             </h2>
 
             <p class="empty-title">
-              ${character.role}
+              ${getLocalizedValue(character.role)}
             </p>
 
             <div class="empty-quote">
@@ -139,7 +155,7 @@ export function renderChat(app) {
               </span>
 
               <p>
-                ${character.quote}
+                ${getLocalizedValue(character.quote)}
               </p>
 
               <span
@@ -151,7 +167,7 @@ export function renderChat(app) {
             </div>
 
             <p class="empty-description">
-              ${character.description}
+              ${getLocalizedValue(character.description)}
             </p>
 
             <div
@@ -217,7 +233,7 @@ export function renderChat(app) {
           class="visually-hidden"
           for="message-input"
         >
-          Escribe tu mensaje
+          ${language === "es" ? "Escribe tu mensaje" : "Write your message"}
         </label>
 
         <div class="input-wrapper">
@@ -227,7 +243,7 @@ export function renderChat(app) {
             id="message-input"
             name="message"
             class="message-input"
-            placeholder="${character.placeholder}"
+            placeholder="${getLocalizedValue(character.placeholder)}"
             autocomplete="off"
           />
 
@@ -236,7 +252,7 @@ export function renderChat(app) {
         <button
           type="submit"
           class="send-button"
-          aria-label="Enviar mensaje"
+          aria-label="${language === "es" ? "Enviar mensaje" : "Send message"}"
         >
 
           <span
@@ -259,7 +275,8 @@ export function renderChat(app) {
     renderConversation(getConversationHistory(), selectedCharacter);
   } else {
     renderConversation(
-      initialMessages[selectedCharacter] || initialMessages.snape,
+      initialMessages[language][selectedCharacter] ||
+        initialMessages[language].snape,
       selectedCharacter,
     );
   }

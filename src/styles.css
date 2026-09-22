@@ -2410,3 +2410,156 @@ body {
     font-size: 16px;
   }
 }
+
+/* =========================================
+   LANGUAGE SWITCHER
+   ========================================= */
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: 1.5rem;
+}
+
+.language-switcher__button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    text-shadow 0.2s ease;
+}
+
+.language-switcher__button:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.language-switcher__button--active {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
+}
+
+.language-switcher__separator {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.7rem;
+  user-select: none;
+}
+
+/* =========================================
+   LANGUAGE SWITCHER — MOBILE
+   ========================================= */
+
+@media (max-width: 767px) {
+  .site-nav {
+    gap: 14px;
+  }
+
+  .site-nav__link {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+
+  .language-switcher {
+    gap: 0.3rem;
+    margin-left: 0.25rem;
+  }
+
+  .language-switcher__button {
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+  }
+
+  .language-switcher__separator {
+    font-size: 0.6rem;
+  }
+}
+
+/* =========================================
+   ABOUT — AUTHOR SIGNATURE
+   ========================================= */
+
+.about-author {
+  width: min(100%, 360px);
+
+  margin: 30px auto 0;
+
+  text-align: center;
+}
+
+.about-author__ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin-bottom: 12px;
+
+  color: var(--color-gold-dark);
+
+  font-size: 7px;
+}
+
+.about-author__ornament span:first-child,
+.about-author__ornament span:last-child {
+  width: 38px;
+  height: 1px;
+
+  background: linear-gradient(90deg, transparent, var(--color-gold-dark));
+}
+
+.about-author__ornament span:last-child {
+  background: linear-gradient(90deg, var(--color-gold-dark), transparent);
+}
+
+.about-author__text {
+  margin: 0;
+
+  color: var(--color-text-muted);
+
+  font-family: var(--font-ui);
+  font-size: 8px;
+  font-weight: 400;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+.about-author__signature {
+  margin: 2px 0 0;
+
+  color: var(--color-gold-light);
+
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-size: 23px;
+  font-style: italic;
+  font-weight: 400;
+
+  line-height: 1.1;
+
+  letter-spacing: 0;
+
+  text-shadow:
+    0 0 10px rgba(210, 189, 134, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.about-author__copyright {
+  margin: 9px 0 0;
+
+  color: rgba(207, 207, 205, 0.32);
+
+  font-family: var(--font-ui);
+  font-size: 6px;
+  font-weight: 400;
+
+  letter-spacing: 1px;
+}

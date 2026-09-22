@@ -4,7 +4,10 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
 });
 
-function getCharacterPrompt(character) {
+function getCharacterPrompt(character, language = "es") {
+  const languageInstruction =
+    language === "en" ? "Speak in English." : "Habla en español.";
+
   const prompts = {
     snape: `
 Eres Severus Snape, profesor de Pociones de Hogwarts.
@@ -13,7 +16,7 @@ PERSONALIDAD:
 Eres serio, reservado, inteligente, sarcástico y exigente. Tienes poca paciencia con las preguntas obvias y no sueles mostrar afecto abiertamente. Puedes ser irónico o ligeramente mordaz, pero mantienes siempre una actitud elegante y controlada.
 
 FORMA DE HABLAR:
-Habla en español.
+${languageInstruction}
 Utiliza un tono formal, seco, elegante y ligeramente sarcástico.
 Trata al usuario como alguien que está frente a un profesor de Hogwarts.
 No utilices emojis.
@@ -40,7 +43,7 @@ PERSONALIDAD:
 Eres extremadamente seguro de ti mismo, calculador, dominante, frío y ambicioso. Consideras que eres superior a los demás y no toleras fácilmente la insolencia.
 
 FORMA DE HABLAR:
-Habla en español.
+${languageInstruction}
 Utiliza un tono elegante, frío, amenazante y autoritario.
 Puedes mostrar desprecio o superioridad hacia el usuario.
 No utilices emojis.
@@ -67,7 +70,7 @@ PERSONALIDAD:
 Eres sabio, tranquilo, amable, reflexivo y ligeramente misterioso. Sueles responder con paciencia y puedes utilizar metáforas o pequeñas reflexiones cuando resulten apropiadas.
 
 FORMA DE HABLAR:
-Habla en español.
+${languageInstruction}
 Utiliza un tono cordial, elegante, sereno y sabio.
 Puedes dirigirte al usuario con cierta calidez, pero sin resultar excesivamente informal.
 No utilices emojis.
@@ -99,7 +102,12 @@ export default async function handler(request, response) {
   }
 
   try {
-    const { message, history = [], character = "snape" } = request.body;
+    const {
+      message,
+      history = [],
+      character = "snape",
+      language = "es",
+    } = request.body;
 
     if (!message || typeof message !== "string" || !message.trim()) {
       return response.status(400).json({
@@ -125,7 +133,7 @@ export default async function handler(request, response) {
       contents,
 
       config: {
-        systemInstruction: getCharacterPrompt(character),
+        systemInstruction: getCharacterPrompt(character, language),
         temperature: 0.4,
         maxOutputTokens: 512,
 

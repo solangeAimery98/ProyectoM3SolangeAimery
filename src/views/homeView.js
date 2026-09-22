@@ -2,13 +2,17 @@ import { characters } from "../data/characters.js";
 
 import { setupCharacterCards } from "../components/characterCards.js";
 
+import { getLanguage, getLocalizedValue } from "../utils/language.js";
+
 function renderCharacterCard(characterKey, character) {
+  const language = getLanguage();
+
   return `
     <button
       class="character-card character-card--active"
       type="button"
       data-character="${characterKey}"
-      aria-label="Chatear con ${character.name}"
+      aria-label="${getLocalizedValue(character.ariaLabel)}"
     >
 
       <div class="character-card__portrait">
@@ -27,7 +31,7 @@ function renderCharacterCard(characterKey, character) {
       <div class="character-card__content">
 
         <p class="character-card__label">
-          AVAILABLE NOW
+          ${language === "es" ? "DISPONIBLE AHORA" : "AVAILABLE NOW"}
         </p>
 
         <h2>
@@ -35,7 +39,7 @@ function renderCharacterCard(characterKey, character) {
         </h2>
 
         <p class="character-card__role">
-          ${character.role}
+          ${getLocalizedValue(character.role)}
         </p>
 
         <div
@@ -48,11 +52,15 @@ function renderCharacterCard(characterKey, character) {
         </div>
 
         <p class="character-card__description">
-          ${character.cardDescription}
+          ${getLocalizedValue(character.cardDescription)}
         </p>
 
         <span class="character-card__cta">
-          Entrar a la conversación
+          ${
+            language === "es"
+              ? "Entrar a la conversación"
+              : "Enter the conversation"
+          }
           <span>&#x2197;&#xFE0E;</span>
         </span>
 
@@ -79,6 +87,8 @@ function renderCharacterCard(characterKey, character) {
 }
 
 export function renderHome(app, onCharacterSelected) {
+  const language = getLanguage();
+
   const cards = Object.entries(characters)
     .map(([key, character]) => renderCharacterCard(key, character))
     .join("");
@@ -102,14 +112,19 @@ export function renderHome(app, onCharacterSelected) {
         </p>
 
         <h1>
-          Chateá con tu<br />
-          personaje favorito
+          ${
+            language === "es"
+              ? "Chateá con tu<br />personaje favorito"
+              : "Chat with your<br />favorite character"
+          }
         </h1>
 
         <p class="selection-description">
-          Elegí una personalidad y comenzá una conversación.
-          Cada personaje tiene su propia voz, historia y manera
-          de responder.
+          ${
+            language === "es"
+              ? "Elegí una personalidad y comenzá una conversación. Cada personaje tiene su propia voz, historia y manera de responder."
+              : "Choose a personality and start a conversation. Each character has their own voice, history, and way of responding."
+          }
         </p>
 
       </div>

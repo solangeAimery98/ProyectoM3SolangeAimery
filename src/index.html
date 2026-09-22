@@ -61,11 +61,39 @@
           </a>
 
           <nav class="site-nav" aria-label="Navegación principal">
-            <a class="site-nav__link site-nav__link--active" href="/">
+            <a
+              class="site-nav__link site-nav__link--active"
+              href="/"
+              data-nav-text="characters"
+            >
               Personajes
             </a>
 
-            <a class="site-nav__link" href="/about"> Sobre Arcana </a>
+            <a class="site-nav__link" href="/about" data-nav-text="about">
+              Sobre Arcana
+            </a>
+
+            <div class="language-switcher" aria-label="Seleccionar idioma">
+              <button
+                class="language-switcher__button"
+                type="button"
+                data-language="es"
+                aria-label="Cambiar a español"
+              >
+                ES
+              </button>
+
+              <span class="language-switcher__separator">|</span>
+
+              <button
+                class="language-switcher__button"
+                type="button"
+                data-language="en"
+                aria-label="Switch to English"
+              >
+                EN
+              </button>
+            </div>
           </nav>
         </div>
       </header>

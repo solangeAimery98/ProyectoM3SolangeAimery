@@ -1,4 +1,8 @@
+import { getLanguage } from "../utils/language.js";
+
 export function renderNotFound(app) {
+  const language = getLanguage();
+
   app.innerHTML = `
     <section class="character-selection">
 
@@ -22,7 +26,11 @@ export function renderNotFound(app) {
         </h1>
 
         <p class="selection-description">
-          La página que estás buscando no existe.
+          ${
+            language === "es"
+              ? "La página que estás buscando no existe."
+              : "The page you are looking for does not exist."
+          }
         </p>
 
         <a
@@ -30,7 +38,11 @@ export function renderNotFound(app) {
           href="/"
           style="display: inline-flex; margin-top: 24px;"
         >
-          ← Volver a los personajes
+          ${
+            language === "es"
+              ? "← Volver a los personajes"
+              : "← Back to characters"
+          }
         </a>
 
       </div>
