@@ -12,6 +12,8 @@ import {
 } from "./chat.js";
 
 const app = document.querySelector("#app");
+let isNavigationLocked = false;
+let lockedPath = null;
 
 const routes = {
   "/": renderHome,
@@ -758,6 +760,9 @@ function setupChatForm() {
       return;
     }
 
+    isNavigationLocked = true;
+    lockedPath = normalizePath(window.location.pathname);
+
     renderMessage("user", message);
     registerUserMessage(message, character);
 
@@ -797,6 +802,9 @@ function setupChatForm() {
       setTimeout(() => {
         updateConnectionStatus("online");
       }, 1800);
+    } finally {
+      isNavigationLocked = false;
+      lockedPath = null;
     }
   });
 }
@@ -936,8 +944,11 @@ function router() {
    ========================================= */
 
 function navigateTo(path) {
-  const normalizedPath = normalizePath(path);
+  if (isNavigationLocked) {
+    return;
+  }
 
+  const normalizedPath = normalizePath(path);
   const currentPath = normalizePath(window.location.pathname);
 
   if (normalizedPath === currentPath) {
@@ -1003,6 +1014,10 @@ function handleLinkClick(event) {
 
   event.preventDefault();
 
+  if (isNavigationLocked) {
+    return;
+  }
+
   navigateTo(url.pathname);
 }
 
@@ -1015,6 +1030,10 @@ function setupCharacterCards() {
 
   cards.forEach((card) => {
     card.addEventListener("click", () => {
+      if (isNavigationLocked) {
+        return;
+      }
+
       const character = card.dataset.character || "snape";
 
       sessionStorage.setItem("selectedCharacter", character);
@@ -1065,7 +1084,14 @@ function setupLinkInterception() {
 }
 
 function setupPopState() {
-  window.addEventListener("popstate", router);
+  window.addEventListener("popstate", () => {
+    if (isNavigationLocked) {
+      window.history.pushState({}, "", lockedPath);
+      return;
+    }
+
+    router();
+  });
 }
 
 function initializeRouter() {
