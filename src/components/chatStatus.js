@@ -1,11 +1,15 @@
+import { getLanguage } from "../utils/language.js";
+
 export function updateConnectionStatus(status) {
   const statusContainer = document.querySelector(".character-status");
-
   const statusText = document.querySelector(".status-text");
 
   if (!statusContainer || !statusText) {
     return;
   }
+
+  const language = getLanguage();
+  const isEnglish = language === "en";
 
   statusContainer.classList.remove(
     "character-status--connecting",
@@ -13,7 +17,7 @@ export function updateConnectionStatus(status) {
   );
 
   if (status === "connecting") {
-    statusText.textContent = "Conectando...";
+    statusText.textContent = isEnglish ? "Connecting..." : "Conectando...";
 
     statusContainer.classList.add("character-status--connecting");
 
@@ -21,12 +25,14 @@ export function updateConnectionStatus(status) {
   }
 
   if (status === "offline") {
-    statusText.textContent = "Conexión interrumpida";
+    statusText.textContent = isEnglish
+      ? "Connection interrupted"
+      : "Conexión interrumpida";
 
     statusContainer.classList.add("character-status--offline");
 
     return;
   }
 
-  statusText.textContent = "Disponible";
+  statusText.textContent = isEnglish ? "Available" : "Disponible";
 }
