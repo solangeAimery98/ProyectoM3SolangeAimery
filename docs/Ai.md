@@ -54,11 +54,11 @@ It was used for different stages of the project, including:
 
 ### Examples
 
-![ChatGPT Example 1](../src/assets/img/ai1.png)
+![ChatGPT Example 1](/src/assets/img/ia1.png)
 
-![ChatGPT Example 2](../src/assets/img/ai2.png)
+![ChatGPT Example 2](/src/assets/img/ia2.png)
 
-![ChatGPT Example 3](../src/assets/img/ai3.png)
+![ChatGPT Example 3](/src/assets/img/ia3.png)
 
 ---
 
@@ -71,9 +71,3 @@ The generated suggestions were reviewed, adapted, tested, and integrated accordi
 The final architecture, implementation, visual decisions, integration of the different modules, testing, debugging, and deployment were carried out as part of the development process of Arcana.
 
 ---
-
-## 📸 Additional examples
-
-Additional screenshots showing the use of AI during the development process can be found in:
-
-[`src/assets/img/`](../src/assets/img/)
