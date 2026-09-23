@@ -4,6 +4,8 @@ import {
   MAX_USER_MESSAGES,
 } from "../state/chatState.js";
 
+import { getLanguage } from "../utils/language.js";
+
 export function updateMessageLimitState(character) {
   const input = document.querySelector("#message-input");
 
@@ -43,6 +45,11 @@ export function updateMessageLimitState(character) {
   button.classList.toggle("send-button--limit", limitReached);
 
   if (limitReached) {
-    input.placeholder = `Límite de ${MAX_USER_MESSAGES} mensajes alcanzado`;
+    const language = getLanguage();
+
+    input.placeholder =
+      language === "es"
+        ? `Límite de ${MAX_USER_MESSAGES} mensajes alcanzado`
+        : `${MAX_USER_MESSAGES}-message limit reached`;
   }
 }
