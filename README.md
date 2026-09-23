@@ -56,9 +56,9 @@ During development, the following concepts were applied:
 
 <div align="center">
 
-<img src="./src/assets/img/preview-home-mobile.png" width="300" />
+<img src="./src/assets/img/home-mobile.png" width="300" />
 
-<img src="./src/assets/img/preview-chat-mobile.png" width="300" />
+<img src="./src/assets/img/chat-mobile.png" width="300" />
 
 </div>
 
