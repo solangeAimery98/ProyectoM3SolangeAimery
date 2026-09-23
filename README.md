@@ -52,13 +52,15 @@ During development, the following concepts were applied:
 
 ![Arcana Chat Desktop](./src/assets/img/chat-desktop.png)
 
-### Home — Mobile
+### Mobile
 
-![Arcana Home Mobile](./src/assets/img/home-mobile.png)
+<div align="center">
 
-### Chat — Mobile
+<img src="./src/assets/img/preview-home-mobile.png" width="300" />
 
-![Arcana Chat Mobile](./src/assets/img/chat-mobile.png)
+<img src="./src/assets/img/preview-chat-mobile.png" width="300" />
+
+</div>
 
 ---
 
@@ -573,7 +575,7 @@ Two main tools were used:
 
 AI was used as a support tool during the learning and development process. The implementation, integration, testing, and final decisions were carried out as part of the development process of Arcana.
 
-👉 [View AI usage documentation](./docs/AI.md)
+👉 [View AI usage documentation](/docs/Ai.md)
 
 ---
 
