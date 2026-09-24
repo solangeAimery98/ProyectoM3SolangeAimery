@@ -1,29 +1,64 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+vi.hoisted(() => {
+  const createStorageMock = () => {
+    let store = {};
+
+    return {
+      getItem(key) {
+        return store[key] ?? null;
+      },
+
+      setItem(key, value) {
+        store[key] = String(value);
+      },
+
+      removeItem(key) {
+        delete store[key];
+      },
+
+      clear() {
+        store = {};
+      },
+    };
+  };
+
+  globalThis.sessionStorage = createStorageMock();
+  globalThis.localStorage = createStorageMock();
+});
+
 import {
+  getRecentHistory,
   registerModelMessage,
   registerUserMessage,
   resetConversationHistory,
-  sendMessageToGemini,
-} from "../src/chat.js";
+} from "../src/state/chatState.js";
+
+import { sendMessageToGemini } from "../src/services/geminiService.js";
 
 describe("Historial de conversación", () => {
   beforeEach(() => {
     resetConversationHistory();
+
+    sessionStorage.clear();
+    localStorage.clear();
+
     vi.restoreAllMocks();
   });
 
   it("registra correctamente un mensaje del usuario", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ reply: "Respuesta de prueba" }),
+      json: async () => ({
+        reply: "Respuesta de prueba",
+      }),
     });
 
     vi.stubGlobal("fetch", fetchMock);
 
     registerUserMessage("Hola, Snape");
 
-    await sendMessageToGemini("¿Cómo está?", "snape");
+    await sendMessageToGemini("¿Cómo está?", "snape", getRecentHistory());
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
@@ -38,14 +73,16 @@ describe("Historial de conversación", () => {
   it("registra correctamente una respuesta del personaje", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ reply: "Una respuesta de prueba." }),
+      json: async () => ({
+        reply: "Una respuesta de prueba.",
+      }),
     });
 
     vi.stubGlobal("fetch", fetchMock);
 
     registerModelMessage("Una respuesta de prueba.");
 
-    await sendMessageToGemini("Gracias", "snape");
+    await sendMessageToGemini("Gracias", "snape", getRecentHistory());
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
@@ -60,7 +97,9 @@ describe("Historial de conversación", () => {
   it("envía solamente los últimos 12 mensajes del historial", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ reply: "Respuesta de prueba" }),
+      json: async () => ({
+        reply: "Respuesta de prueba",
+      }),
     });
 
     vi.stubGlobal("fetch", fetchMock);
@@ -69,24 +108,38 @@ describe("Historial de conversación", () => {
       registerUserMessage(`Mensaje ${i}`);
     }
 
-    await sendMessageToGemini("Mensaje actual", "snape");
+    await sendMessageToGemini("Mensaje actual", "snape", getRecentHistory());
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
     expect(requestBody.history).toHaveLength(12);
-    expect(requestBody.history[0].parts[0].text).toBe("Mensaje 2");
-    expect(requestBody.history[11].parts[0].text).toBe("Mensaje 13");
+
+    expect(requestBody.history[0]).toEqual({
+      role: "user",
+      parts: [{ text: "Mensaje 2" }],
+    });
+
+    expect(requestBody.history[11]).toEqual({
+      role: "user",
+      parts: [{ text: "Mensaje 13" }],
+    });
   });
 
   it("hace la petición a la API y devuelve la respuesta recibida", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ reply: "Buenas noches." }),
+      json: async () => ({
+        reply: "Buenas noches.",
+      }),
     });
 
     vi.stubGlobal("fetch", fetchMock);
 
-    const reply = await sendMessageToGemini("Buenas noches", "dumbledore");
+    const reply = await sendMessageToGemini(
+      "Buenas noches",
+      "dumbledore",
+      getRecentHistory(),
+    );
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
 
