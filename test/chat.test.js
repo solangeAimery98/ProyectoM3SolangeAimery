@@ -58,13 +58,7 @@ describe("Historial de conversación", () => {
 
     registerUserMessage("Hola, Snape");
 
-    await sendMessageToGemini(
-      "¿Cómo está?",
-
-      "snape",
-
-      getConversationHistory(),
-    );
+    await sendMessageToGemini("¿Cómo está?", "snape", getConversationHistory());
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
@@ -88,13 +82,7 @@ describe("Historial de conversación", () => {
 
     registerModelMessage("Una respuesta de prueba.");
 
-    await sendMessageToGemini(
-      "Gracias",
-
-      "snape",
-
-      getConversationHistory(),
-    );
+    await sendMessageToGemini("Gracias", "snape", getConversationHistory());
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
@@ -139,6 +127,58 @@ describe("Historial de conversación", () => {
       role: "user",
       parts: [{ text: "Mensaje 13" }],
     });
+  });
+
+  it("devuelve el historial completo de la conversación", () => {
+    registerUserMessage("Hola");
+    registerModelMessage("Hola, ¿en qué puedo ayudarte?");
+
+    expect(getConversationHistory()).toEqual([
+      {
+        role: "user",
+        parts: [{ text: "Hola" }],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Hola, ¿en qué puedo ayudarte?" }],
+      },
+    ]);
+  });
+
+  it("reinicia correctamente el historial de conversación", () => {
+    registerUserMessage("Mensaje de prueba");
+
+    expect(getConversationHistory()).toHaveLength(1);
+
+    resetConversationHistory();
+
+    expect(getConversationHistory()).toEqual([]);
+  });
+
+  it("mantiene el orden de los mensajes de usuario y del personaje", () => {
+    registerUserMessage("Primer mensaje");
+    registerModelMessage("Primera respuesta");
+    registerUserMessage("Segundo mensaje");
+    registerModelMessage("Segunda respuesta");
+
+    expect(getConversationHistory()).toEqual([
+      {
+        role: "user",
+        parts: [{ text: "Primer mensaje" }],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Primera respuesta" }],
+      },
+      {
+        role: "user",
+        parts: [{ text: "Segundo mensaje" }],
+      },
+      {
+        role: "model",
+        parts: [{ text: "Segunda respuesta" }],
+      },
+    ]);
   });
 
   it("hace la petición a la API y devuelve la respuesta recibida", async () => {
