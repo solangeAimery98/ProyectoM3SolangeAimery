@@ -16,6 +16,8 @@ import {
   sendMessageToGemini,
 } from "../services/geminiService.js";
 
+import { playReceiveSound, playSendSound } from "../services/audioService.js";
+
 import {
   hideTypingIndicator,
   renderMessage,
@@ -30,7 +32,6 @@ import { normalizePath } from "../utils/utils.js";
 
 export function setupChatForm() {
   const form = document.querySelector("#chat-form");
-
   const input = document.querySelector("#message-input");
 
   if (!form || !input) {
@@ -65,6 +66,8 @@ export function setupChatForm() {
 
     registerUserMessage(message, character);
 
+    playSendSound();
+
     input.value = "";
 
     updateMessageLimitState(character);
@@ -89,6 +92,8 @@ export function setupChatForm() {
       updateConnectionStatus("online");
 
       renderMessage(character, reply);
+
+      playReceiveSound();
 
       registerModelMessage(reply, character);
     } catch (error) {

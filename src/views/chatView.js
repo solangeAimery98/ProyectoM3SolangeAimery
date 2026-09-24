@@ -16,6 +16,12 @@ import { updateMessageLimitState } from "../components/messageLimit.js";
 
 import { getLanguage, getLocalizedValue } from "../utils/language.js";
 
+import {
+  isAmbientMusicPlaying,
+  pauseAmbientMusic,
+  playAmbientMusic,
+} from "../services/audioService.js";
+
 export function renderChat(app) {
   const selectedCharacter = getSelectedCharacter();
 
@@ -82,6 +88,24 @@ export function renderChat(app) {
           </span>
 
         </div>
+
+        <button
+          type="button"
+          class="music-button"
+          id="music-toggle"
+          aria-label="${
+            language === "es"
+              ? "Activar música ambiente"
+              : "Turn ambient music on"
+          }"
+          aria-pressed="false"
+        >
+          <span class="music-button__icon" aria-hidden="true">♫</span>
+
+          <span class="music-button__text">
+            ${language === "es" ? "Música OFF" : "Music OFF"}
+          </span>
+        </button>
 
       </header>
 
@@ -268,6 +292,65 @@ export function renderChat(app) {
 
     </section>
   `;
+
+  const musicButton = document.querySelector("#music-toggle");
+
+  if (musicButton) {
+    const ambientMusicPlaying = isAmbientMusicPlaying();
+
+    musicButton.setAttribute("aria-pressed", String(ambientMusicPlaying));
+
+    musicButton.querySelector(".music-button__text").textContent =
+      ambientMusicPlaying
+        ? language === "es"
+          ? "Música ON"
+          : "Music ON"
+        : language === "es"
+          ? "Música OFF"
+          : "Music OFF";
+
+    musicButton.setAttribute(
+      "aria-label",
+      ambientMusicPlaying
+        ? language === "es"
+          ? "Desactivar música ambiente"
+          : "Turn ambient music off"
+        : language === "es"
+          ? "Activar música ambiente"
+          : "Turn ambient music on",
+    );
+
+    musicButton.addEventListener("click", () => {
+      const isPlaying = musicButton.getAttribute("aria-pressed") === "true";
+
+      if (isPlaying) {
+        pauseAmbientMusic();
+      } else {
+        playAmbientMusic();
+      }
+
+      musicButton.setAttribute("aria-pressed", String(!isPlaying));
+
+      musicButton.querySelector(".music-button__text").textContent = !isPlaying
+        ? language === "es"
+          ? "Música ON"
+          : "Music ON"
+        : language === "es"
+          ? "Música OFF"
+          : "Music OFF";
+
+      musicButton.setAttribute(
+        "aria-label",
+        !isPlaying
+          ? language === "es"
+            ? "Desactivar música ambiente"
+            : "Turn ambient music off"
+          : language === "es"
+            ? "Activar música ambiente"
+            : "Turn ambient music on",
+      );
+    });
+  }
 
   const hasSavedConversation = initializeConversation(selectedCharacter);
 
