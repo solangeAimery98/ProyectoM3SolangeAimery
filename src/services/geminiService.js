@@ -57,20 +57,34 @@ export async function sendMessageToGemini(message, character, history) {
 
   const language = getLanguage();
 
-  const response = await fetch("/api/functions", {
-    method: "POST",
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
 
-    headers: {
-      "Content-Type": "application/json",
-    },
+  try {
+    const response = await fetch("/api/functions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message,
+        character,
+        history,
+        language,
+      }),
+      signal: controller.signal,
+    });
 
-    body: JSON.stringify({
-      message,
-      character,
-      history,
-      language,
-    }),
-  });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "No se pudo obtener una respuesta.");
+    }
+
+    return data.reply;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   const data = await response.json();
 
