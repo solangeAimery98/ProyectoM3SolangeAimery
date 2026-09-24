@@ -103,6 +103,7 @@ Before running the project, make sure you have installed:
 
 - Node.js
 - npm
+- Vercel CLI
 
 You will also need a **Gemini API Key** to use the AI functionality locally.
 
@@ -132,21 +133,31 @@ npm install
 
 # ⚙️ Environment Variables
 
-The Gemini API key is used on the server side through the Vercel Function.
+The Gemini API key is used exclusively on the server side through the Vercel serverless function.
 
-Create the required environment variable:
+Create a local environment file:
+
+```text
+.env.local
+```
+
+Add the following variable:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-The API key should not be exposed in the frontend code or committed to the repository.
+The API key must never be exposed in frontend JavaScript or committed to the repository.
+
+The `.env.local` file is ignored by Git.
+
+For Vercel deployment, configure the same `GEMINI_API_KEY` environment variable in the project's Vercel settings.
 
 ---
 
 # ▶️ Running the Project
 
-The project can be developed locally using Vercel.
+The project uses Vercel Functions, so it should be run locally with the Vercel development server.
 
 Run:
 
@@ -159,6 +170,28 @@ The application will be available at:
 ```text
 http://localhost:3000
 ```
+
+---
+
+# 🧪 Testing
+
+The project uses **Vitest** for automated tests.
+
+Run the test suite with:
+
+```bash
+npm test
+```
+
+The tests verify important chat functionality, including:
+
+- User message registration.
+- Model response registration.
+- Conversation history sent to the API.
+- Gemini API requests.
+- API response handling.
+
+All tests should pass before committing changes to the project.
 
 ---
 
@@ -247,7 +280,7 @@ Arcana maintains the conversation context while the user is chatting with a char
 
 Previous messages are stored in the application's state and conversation history.
 
-A portion of the conversation history is sent to Gemini together with each new message.
+The complete conversation history is sent to Gemini together with each new message.
 
 This allows the characters to maintain context instead of treating every message as an isolated conversation.
 
@@ -516,13 +549,13 @@ Arcana uses browser storage for different purposes.
 Used to persist information between sessions, including:
 
 - Selected language.
-- Character-related application preferences where applicable.
+- Conversations for each character.
+
+Conversations are stored temporarily and expire after 24 hours.
 
 ### SessionStorage
 
-Used for information that should persist during the current browser session.
-
-Conversation-related state is maintained so that the user can continue interacting with the selected character without losing the current context.
+Used to maintain the number of user messages sent for each character during the current browser session.
 
 ---
 
@@ -575,7 +608,7 @@ Two main tools were used:
 
 AI was used as a support tool during the learning and development process. The implementation, integration, testing, and final decisions were carried out as part of the development process of Arcana.
 
-👉 [View AI usage documentation](/docs/Ai.md)
+👉 [View AI usage documentation](/docs/AI.md)
 
 ---
 
