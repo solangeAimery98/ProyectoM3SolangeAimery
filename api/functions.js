@@ -94,6 +94,9 @@ Presta atención a los mensajes anteriores de la conversación y recuerda la inf
   return prompts[character] || prompts.snape;
 }
 
+const VALID_CHARACTERS = ["snape", "voldemort", "dumbledore"];
+const VALID_LANGUAGES = ["es", "en"];
+
 export default async function handler(request, response) {
   if (request.method !== "POST") {
     return response.status(405).json({
@@ -107,11 +110,44 @@ export default async function handler(request, response) {
       history = [],
       character = "snape",
       language = "es",
-    } = request.body;
+    } = request.body || {};
 
     if (!message || typeof message !== "string" || !message.trim()) {
       return response.status(400).json({
         error: "El mensaje es obligatorio.",
+      });
+    }
+
+    if (!VALID_CHARACTERS.includes(character)) {
+      return response.status(400).json({
+        error: "Personaje no válido.",
+      });
+    }
+
+    if (!VALID_LANGUAGES.includes(language)) {
+      return response.status(400).json({
+        error: "Idioma no válido.",
+      });
+    }
+
+    if (!Array.isArray(history)) {
+      return response.status(400).json({
+        error: "Historial no válido.",
+      });
+    }
+
+    const isValidHistory = history.every(
+      (item) =>
+        item &&
+        ["user", "model"].includes(item.role) &&
+        Array.isArray(item.parts) &&
+        item.parts.length > 0 &&
+        item.parts.every((part) => part && typeof part.text === "string"),
+    );
+
+    if (!isValidHistory) {
+      return response.status(400).json({
+        error: "Historial no válido.",
       });
     }
 
@@ -152,7 +188,7 @@ export default async function handler(request, response) {
     console.error("ERROR COMPLETO DE GEMINI:", error);
 
     return response.status(500).json({
-      error: error?.message || "No se pudo obtener una respuesta de Gemini.",
+      error: "No se pudo obtener una respuesta de Gemini.",
     });
   }
 }
