@@ -28,7 +28,7 @@ vi.hoisted(() => {
 });
 
 import {
-  getRecentHistory,
+  getConversationHistory,
   registerModelMessage,
   registerUserMessage,
   resetConversationHistory,
@@ -58,7 +58,13 @@ describe("Historial de conversación", () => {
 
     registerUserMessage("Hola, Snape");
 
-    await sendMessageToGemini("¿Cómo está?", "snape", getRecentHistory());
+    await sendMessageToGemini(
+      "¿Cómo está?",
+
+      "snape",
+
+      getConversationHistory(),
+    );
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
@@ -82,7 +88,13 @@ describe("Historial de conversación", () => {
 
     registerModelMessage("Una respuesta de prueba.");
 
-    await sendMessageToGemini("Gracias", "snape", getRecentHistory());
+    await sendMessageToGemini(
+      "Gracias",
+
+      "snape",
+
+      getConversationHistory(),
+    );
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
@@ -94,7 +106,7 @@ describe("Historial de conversación", () => {
     ]);
   });
 
-  it("envía solamente los últimos 12 mensajes del historial", async () => {
+  it("envía el historial completo sin recortarlo", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({
@@ -108,18 +120,22 @@ describe("Historial de conversación", () => {
       registerUserMessage(`Mensaje ${i}`);
     }
 
-    await sendMessageToGemini("Mensaje actual", "snape", getRecentHistory());
+    await sendMessageToGemini(
+      "Mensaje actual",
+      "snape",
+      getConversationHistory(),
+    );
 
     const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
 
-    expect(requestBody.history).toHaveLength(12);
+    expect(requestBody.history).toHaveLength(13);
 
     expect(requestBody.history[0]).toEqual({
       role: "user",
-      parts: [{ text: "Mensaje 2" }],
+      parts: [{ text: "Mensaje 1" }],
     });
 
-    expect(requestBody.history[11]).toEqual({
+    expect(requestBody.history[12]).toEqual({
       role: "user",
       parts: [{ text: "Mensaje 13" }],
     });
@@ -138,7 +154,7 @@ describe("Historial de conversación", () => {
     const reply = await sendMessageToGemini(
       "Buenas noches",
       "dumbledore",
-      getRecentHistory(),
+      getConversationHistory(),
     );
 
     expect(fetchMock).toHaveBeenCalledTimes(1);

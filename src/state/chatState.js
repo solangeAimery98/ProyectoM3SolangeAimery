@@ -77,10 +77,6 @@ export function getConversationHistory() {
   return [...conversationHistory];
 }
 
-export function getRecentHistory() {
-  return conversationHistory.slice(-12);
-}
-
 export function registerUserMessage(content, character) {
   addUserMessage(content);
   incrementUserMessageCount(character);

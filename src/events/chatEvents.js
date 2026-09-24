@@ -5,7 +5,7 @@ import {
 } from "../state/appState.js";
 
 import {
-  getRecentHistory,
+  getConversationHistory,
   hasReachedMessageLimit,
   registerModelMessage,
   registerUserMessage,
@@ -59,6 +59,8 @@ export function setupChatForm() {
 
     lockNavigation(normalizePath(window.location.pathname));
 
+    const previousHistory = getConversationHistory();
+
     renderMessage("user", message);
 
     registerUserMessage(message, character);
@@ -79,7 +81,7 @@ export function setupChatForm() {
       const reply = await sendMessageToGemini(
         message,
         character,
-        getRecentHistory(),
+        previousHistory,
       );
 
       hideTypingIndicator();
