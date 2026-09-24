@@ -63,11 +63,9 @@ export function setupLinkInterception(navigateTo) {
 
 export function setupPopState(router) {
   window.addEventListener("popstate", () => {
-    const { isLocked, lockedPath } = getNavigationLockState();
+    const { isLocked } = getNavigationLockState();
 
     if (isLocked) {
-      window.history.pushState({}, "", lockedPath);
-
       return;
     }
 
