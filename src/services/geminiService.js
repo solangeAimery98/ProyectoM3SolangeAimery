@@ -1,7 +1,5 @@
 import { getLanguage } from "../utils/language.js";
 
-const FORCE_ERROR = false;
-
 const mockResponses = {
   es: {
     snape: [
@@ -51,10 +49,6 @@ const mockResponses = {
 };
 
 export async function sendMessageToGemini(message, character, history) {
-  if (FORCE_ERROR) {
-    throw new Error("Error forzado para pruebas");
-  }
-
   const language = getLanguage();
 
   const controller = new AbortController();
