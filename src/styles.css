@@ -1301,7 +1301,7 @@ body {
 }
 
 /* =========================================
-   CHAT HEADER â€” MOBILE
+   CHAT HEADER Ã¢â‚¬â€ MOBILE
    ========================================= */
 
 @media (max-width: 767px) {
@@ -1357,6 +1357,15 @@ body {
   .music-button__icon {
     font-size: 0.75rem;
   }
+
+  /*
+   * iOS Safari hace zoom automÃ¡tico al enfocar inputs con
+   * una tipografÃ­a menor a 16px. Ese zoom puede sacar el
+   * botÃ³n de envÃ­o del Ã¡rea visible.
+   */
+  .message-input {
+    font-size: 16px;
+  }
 }
 
 /* =========================================
@@ -1373,7 +1382,7 @@ body {
   /*
    * Importante:
    * min-height: 0 permite que esta zona se reduzca
-   * dentro del chat en lugar de empujar la pÃƒÆ’Ã‚Â¡gina.
+   * dentro del chat en lugar de empujar la pÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡gina.
    */
   min-height: 0;
 
@@ -1441,7 +1450,7 @@ body {
   position: relative;
 
   /*
-   * Cartel mÃƒÆ’Ã‚Â¡s compacto.
+   * Cartel mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡s compacto.
    */
   width: min(100%, 300px);
 
@@ -2184,7 +2193,7 @@ body {
 }
 
 /* =========================================
-   TABLET ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 768px
+   TABLET ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 768px
    ========================================= */
 
 @media (min-width: 768px) {
@@ -2259,7 +2268,7 @@ body {
   }
 
   /* =========================================
-     CHAT ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â TABLET
+     CHAT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â TABLET
      ========================================= */
 
   .chat-panel {
@@ -2314,7 +2323,7 @@ body {
     padding: 28px 32px;
   }
 
-  /* Cartel de introducciÃ³n mÃ¡s compacto en tablet */
+  /* Cartel de introducciÃƒÂ³n mÃƒÂ¡s compacto en tablet */
   .empty-card {
     width: 285px;
 
@@ -2364,7 +2373,7 @@ body {
 }
 
 /* =========================================
-   DESKTOP ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 1024px
+   DESKTOP ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 1024px
    ========================================= */
 
 @media (min-width: 1024px) {
@@ -2414,7 +2423,7 @@ body {
   }
 
   /* =========================================
-     CHAT ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â DESKTOP
+     CHAT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â DESKTOP
      ========================================= */
 
   .chat-panel {
@@ -2482,7 +2491,7 @@ body {
 }
 
 /* =========================================
-   LARGE DESKTOP ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 1400px
+   LARGE DESKTOP ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 1400px
    ========================================= */
 
 @media (min-width: 1400px) {
@@ -2525,7 +2534,7 @@ body {
   }
 }
 /* =========================================
-   ESTADOS DE CONEXIÃ“N
+   ESTADOS DE CONEXIÃƒâ€œN
    ========================================= */
 
 .character-status--connecting .status-dot {
@@ -2585,7 +2594,7 @@ body {
 }
 
 /* =========================================
-   ABOUT â€” AUTHOR SIGNATURE
+   ABOUT Ã¢â‚¬â€ AUTHOR SIGNATURE
    ========================================= */
 
 .about-author {
