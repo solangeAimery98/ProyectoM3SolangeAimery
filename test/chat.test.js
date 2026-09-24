@@ -211,4 +211,29 @@ describe("Historial de conversación", () => {
 
     expect(reply).toBe("Buenas noches.");
   });
+
+  it("lanza un error cuando la API responde con un error", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({
+        error: "No se pudo obtener una respuesta de Gemini.",
+      }),
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      sendMessageToGemini("Hola", "snape", getConversationHistory()),
+    ).rejects.toThrow("No se pudo obtener una respuesta de Gemini.");
+  });
+
+  it("propaga el error cuando falla la petición", async () => {
+    const fetchMock = vi.fn().mockRejectedValue(new Error("Network error"));
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      sendMessageToGemini("Hola", "snape", getConversationHistory()),
+    ).rejects.toThrow("Network error");
+  });
 });
