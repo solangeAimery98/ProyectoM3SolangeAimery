@@ -96,6 +96,8 @@ Presta atención a los mensajes anteriores de la conversación y recuerda la inf
 
 const VALID_CHARACTERS = ["snape", "voldemort", "dumbledore"];
 const VALID_LANGUAGES = ["es", "en"];
+const MAX_MESSAGE_LENGTH = 1000;
+const MAX_HISTORY_LENGTH = 50;
 
 export default async function handler(request, response) {
   if (request.method !== "POST") {
@@ -118,6 +120,12 @@ export default async function handler(request, response) {
       });
     }
 
+    if (message.trim().length > MAX_MESSAGE_LENGTH) {
+      return response.status(400).json({
+        error: "El mensaje es demasiado largo.",
+      });
+    }
+
     if (!VALID_CHARACTERS.includes(character)) {
       return response.status(400).json({
         error: "Personaje no válido.",
@@ -133,6 +141,12 @@ export default async function handler(request, response) {
     if (!Array.isArray(history)) {
       return response.status(400).json({
         error: "Historial no válido.",
+      });
+    }
+
+    if (history.length > MAX_HISTORY_LENGTH) {
+      return response.status(400).json({
+        error: "El historial es demasiado largo.",
       });
     }
 
@@ -178,8 +192,6 @@ export default async function handler(request, response) {
         },
       },
     });
-
-    console.log("RESPUESTA DE GEMINI:", result.text);
 
     return response.status(200).json({
       reply: result.text,
