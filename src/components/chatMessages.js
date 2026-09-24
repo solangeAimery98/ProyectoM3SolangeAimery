@@ -1,3 +1,5 @@
+import { getLanguage } from "../utils/language.js";
+
 const characterNames = {
   snape: "SNAPE",
   voldemort: "VOLDEMORT",
@@ -80,7 +82,12 @@ export function showTypingIndicator(character = "snape") {
 
   label.classList.add("typing-label");
 
-  label.textContent = `${characterNames[character] || "CHARACTER"} está escribiendo`;
+  const language = getLanguage();
+
+  label.textContent =
+    language === "en"
+      ? `${characterNames[character] || "CHARACTER"} is typing`
+      : `${characterNames[character] || "CHARACTER"} está escribiendo`;
 
   dots.classList.add("typing-dots");
 
