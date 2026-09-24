@@ -85,16 +85,8 @@ export async function sendMessageToGemini(message, character, history) {
   } finally {
     clearTimeout(timeout);
   }
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || "No se pudo obtener una respuesta.");
-  }
-
-  return data.reply;
 }
-
+``;
 export function getMockResponse(character = "snape") {
   const language = getLanguage();
 

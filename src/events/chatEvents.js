@@ -102,8 +102,6 @@ export function setupChatForm() {
 
       renderMessage(character, mockReply);
 
-      registerModelMessage(mockReply, character);
-
       setTimeout(() => {
         updateConnectionStatus("online");
       }, 1800);
