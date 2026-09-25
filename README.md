@@ -329,55 +329,6 @@ This allows the application to maintain a usable conversation experience even wh
 
 ---
 
-# 🧪 Forcing a Mock Error
-
-Arcana includes a development mechanism to simulate a Gemini error.
-
-Inside:
-
-```text
-src/services/geminiService.js
-```
-
-there is a constant:
-
-```js
-const FORCE_ERROR = false;
-```
-
-To intentionally trigger the error flow, temporarily change it to:
-
-```js
-const FORCE_ERROR = true;
-```
-
-Then run the application locally:
-
-```bash
-npx vercel dev
-```
-
-Open a character chat and send a message.
-
-The application will intentionally throw an error before making the Gemini request.
-
-The error-handling flow will then:
-
-- Detect the error.
-- Show the connection interruption state.
-- Display the mock response.
-- Restore the connection status.
-
-After testing, change the value back to:
-
-```js
-const FORCE_ERROR = false;
-```
-
-This mechanism was implemented to verify that the application's fallback behavior works correctly.
-
----
-
 # 🔢 Message Limit
 
 Each character has a maximum of **20 user messages**.
